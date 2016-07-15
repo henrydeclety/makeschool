@@ -7,15 +7,22 @@
 //
 
 import UIKit
+import youtube_ios_player_helper
+
 
 class SearchViewController: UIViewController {
     
     var videosArray : [Dictionary<NSObject, AnyObject>] = []
+    var selectedRow : Int?
+    var start = 0
+    var end = 15
     @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+
         searchField.delegate = self
         tableView.dataSource = self
         // Do any additional setup after loading the view, typically from a nib.
@@ -26,10 +33,23 @@ class SearchViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "displaySelectedVideo" {
+            let playerViewController = segue.destinationViewController as! PlayerViewController
+            playerViewController.videoID = videosArray[selectedRow!]["videoID"] as! String
+        }
+    }
+    
+    
 }
 
 extension SearchViewController: UITextFieldDelegate {
     
+    @IBAction func button(sender: UIButton) {
+        textFieldShouldReturn(searchField)
+    }
+    
+    // rajouter une view wait sijamais
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         let targetURL = HTTPHelper.makeNSURLFromStringSearch(textField.text!)
@@ -88,3 +108,14 @@ extension SearchViewController : UITableViewDataSource{
     }
 
 }
+
+extension SearchViewController : UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        selectedRow = indexPath.row
+        performSegueWithIdentifier("displaySelectedVideo", sender: self)
+    }
+
+
+}
+

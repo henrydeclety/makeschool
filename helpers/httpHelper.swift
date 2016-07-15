@@ -13,6 +13,9 @@ class HTTPHelper {
     static let type = "video"
     static let apiKey = "AIzaSyBLm073FUFI6DXiuiFWeMFV37y1Y9YqpHs"
 
+    
+    
+    
     static func performGetRequest(targetURL: NSURL!, completion: (data: NSData?, HTTPStatusCode: Int, error: NSError?) -> Void) {
         let request = NSMutableURLRequest(URL: targetURL)
         request.HTTPMethod = "GET"
@@ -33,7 +36,7 @@ class HTTPHelper {
     static func makeNSURLFromStringSearch(text : String) -> NSURL {
         var urlString = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=\(text)&type=\(type)&key=\(apiKey)"
         urlString = urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-        return NSURL(fileURLWithPath: urlString)
+        return NSURL(string: urlString)!
     }
 
     
