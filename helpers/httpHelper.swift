@@ -34,7 +34,7 @@ class HTTPHelper {
     }
     
     static func makeNSURLFromStringSearch(text : String) -> NSURL {
-        var urlString = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=\(text)&type=\(type)&key=\(apiKey)"
+        var urlString = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=\(text)&type=\(type)&key=\(apiKey)"
         urlString = urlString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         return NSURL(string: urlString)!
     }

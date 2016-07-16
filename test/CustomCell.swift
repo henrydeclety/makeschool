@@ -13,5 +13,4 @@ class CustomCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var myImageView: UIImageView!
     
-    
 }

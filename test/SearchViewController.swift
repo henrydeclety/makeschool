@@ -22,7 +22,6 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
-
         searchField.delegate = self
         tableView.dataSource = self
         // Do any additional setup after loading the view, typically from a nib.
@@ -36,7 +35,7 @@ class SearchViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "displaySelectedVideo" {
             let playerViewController = segue.destinationViewController as! PlayerViewController
-            playerViewController.videoID = videosArray[selectedRow!]["videoID"] as! String
+            playerViewController.videoID = videosArray[tableView.indexPathForSelectedRow!.row]["videoID"] as! String
         }
     }
     
@@ -51,12 +50,13 @@ extension SearchViewController: UITextFieldDelegate {
     
     // rajouter une view wait sijamais
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
+        self.view.endEditing(true)
         let targetURL = HTTPHelper.makeNSURLFromStringSearch(textField.text!)
         
         HTTPHelper.performGetRequest(targetURL, completion: { (data, HTTPStatusCode, error) -> Void in
             if HTTPStatusCode == 200 && error == nil {
                 do {
+                    self.videosArray = []
                     // Convert the JSON data to a dictionary object.
                     let resultsDict = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! Dictionary<NSObject, AnyObject>
                     // Get all search result items ("items" array).
@@ -110,12 +110,11 @@ extension SearchViewController : UITableViewDataSource{
 }
 
 extension SearchViewController : UITableViewDelegate {
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selectedRow = indexPath.row
-        performSegueWithIdentifier("displaySelectedVideo", sender: self)
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.selected = false
     }
 
 
 }
-

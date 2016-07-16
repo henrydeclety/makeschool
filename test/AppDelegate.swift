@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Parse
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +18,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        let configuration = ParseClientConfiguration {
+            $0.applicationId = "myApp"
+            $0.server = "https://myApp-meet.herokuapp.com/parse"
+        }
+        Parse.initializeWithConfiguration(configuration)
+        
+        do {
+            try PFUser.logInWithUsername("test", password: "test")
+        } catch {
+            print("Unable to log in")
+        }
+        
+        if let currentUser = PFUser.currentUser() {
+            print("\(currentUser.username!) logged in successfully")
+        } else {
+            print("No logged in user :(")
+        }
+        
         return true
     }
 

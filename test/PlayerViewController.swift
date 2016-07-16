@@ -8,20 +8,123 @@
 
 import UIKit
 import youtube_ios_player_helper
+import Darwin
 
 
 class PlayerViewController: UIViewController {
     
     var videoID: String!
+    let maxTimeInterval = 30
     @IBOutlet weak var playerView: YTPlayerView!
-    @IBOutlet weak var start: UIDatePicker!
-    @IBOutlet weak var end: UIDatePicker!
+    @IBOutlet weak var start: TimePickerView!
+    @IBOutlet weak var end: TimePickerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         playerView.loadWithVideoId(videoID)
+        start.delegate = self
+        end.delegate = self
+        start.dataSource = self
+        end.dataSource = self
+        playerView.delegate = self
     }
+    
+    func minutes() -> Int {
+        return Int(floor(playerView.duration()/60))
+    }
+    
+    func seconds() -> Int {
+        return Int(playerView.duration()) - minutes() * 60
+    }
+    
     
     @IBAction func save(sender: AnyObject) {
     }
 }
+
+extension PlayerViewController : UIPickerViewDataSource {
+
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 2
+    }
+    
+
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if (pickerView.tag == 0){
+            if (component == 0){
+                return minutes()
+            } else {
+                if (start.minutes() == minutes()) {return seconds()}
+                else {return 60}
+            }
+        } else {
+            if (component == 0){
+                if (start.seconds() >= 60 - maxTimeInterval && start.minutes() < minutes()) {
+                    return 2
+                } else {
+                    return 1
+                }
+            } else {
+                if (end.minutes() == 0){
+                    return min(60 - (start.seconds()+1),maxTimeInterval)
+                } else {
+                    return min((start.seconds()+1) - 30, maxTimeInterval)
+                }
+            }
+        }
+    }
+
+
+}
+
+
+extension PlayerViewController : UIPickerViewDelegate {
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if (pickerView.tag == 0){
+            return String(row)
+        } else {
+            if (component == 0){
+                return String(start.minutes() + row)
+            } else {
+                if (end.minutes() == 0){
+                    return String(start.seconds() + row + 1)
+                } else {
+                    return String(row)
+                }
+            }
+        }
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
+        start.reloadAllComponents()
+        end.reloadAllComponents()
+    }
+
+}
+
+
+extension PlayerViewController : YTPlayerViewDelegate {
+
+    func playerViewDidBecomeReady(playerView: YTPlayerView) {
+        start.reloadAllComponents()
+        end.reloadAllComponents()
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
