@@ -10,6 +10,9 @@
 		A9E1043538750CDF34B0D64F /* Pods_myAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F6A8CD2065F078B253504F6 /* Pods_myAppUITests.framework */; };
 		B5142DEE750CA0281F07B2D9 /* Pods_myAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7951F73529AD5B2159463BBE /* Pods_myAppTests.framework */; };
 		BA3B8E2B1D395750004D8563 /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3B8E2A1D395750004D8563 /* TimePickerView.swift */; };
+		BA49F3191D3D5D6200D53474 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA49F3181D3D5D6200D53474 /* HomeViewController.swift */; };
+		BA49F31D1D3D931900D53474 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA49F31C1D3D931900D53474 /* User.swift */; };
+		BA49F31F1D3D9E5500D53474 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA49F31E1D3D9E5500D53474 /* Post.swift */; };
 		BA5973581D36B24B00201D2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5973571D36B24B00201D2F /* AppDelegate.swift */; };
 		BA59735A1D36B24B00201D2F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5973591D36B24B00201D2F /* SearchViewController.swift */; };
 		BA59735F1D36B24B00201D2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA59735E1D36B24B00201D2F /* Assets.xcassets */; };
@@ -49,6 +52,9 @@
 		AD29123990C9F40027B9CC8C /* Pods-myAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myAppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-myAppUITests/Pods-myAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B789CD63D8BD85E5E0F6CB48 /* Pods-myApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-myApp/Pods-myApp.release.xcconfig"; sourceTree = "<group>"; };
 		BA3B8E2A1D395750004D8563 /* TimePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
+		BA49F3181D3D5D6200D53474 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		BA49F31C1D3D931900D53474 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		BA49F31E1D3D9E5500D53474 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		BA5973541D36B24B00201D2F /* myApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = myApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA5973571D36B24B00201D2F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BA5973591D36B24B00201D2F /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -121,9 +127,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		BA49F31B1D3D930900D53474 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BA49F31C1D3D931900D53474 /* User.swift */,
+				BA49F31E1D3D9E5500D53474 /* Post.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		BA59734B1D36B24B00201D2F = {
 			isa = PBXGroup;
 			children = (
+				BA49F31B1D3D930900D53474 /* Model */,
 				BA5973881D36E37600201D2F /* helpers */,
 				BA5973561D36B24B00201D2F /* test */,
 				BA59736B1D36B24B00201D2F /* testTests */,
@@ -157,6 +173,7 @@
 				BADE5C441D384D0500827542 /* PlayerViewController.swift */,
 				BADE5CB01D38553500827542 /* myApp-Bridging-Header.h */,
 				BA3B8E2A1D395750004D8563 /* TimePickerView.swift */,
+				BA49F3181D3D5D6200D53474 /* HomeViewController.swift */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -454,7 +471,10 @@
 				BA59735A1D36B24B00201D2F /* SearchViewController.swift in Sources */,
 				BA59738A1D36E38900201D2F /* httpHelper.swift in Sources */,
 				BA59738C1D36FC3300201D2F /* CustomCell.swift in Sources */,
+				BA49F31D1D3D931900D53474 /* User.swift in Sources */,
 				BA5973581D36B24B00201D2F /* AppDelegate.swift in Sources */,
+				BA49F31F1D3D9E5500D53474 /* Post.swift in Sources */,
+				BA49F3191D3D5D6200D53474 /* HomeViewController.swift in Sources */,
 				BADE5C451D384D0500827542 /* PlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

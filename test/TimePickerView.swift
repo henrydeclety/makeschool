@@ -18,4 +18,8 @@ public class TimePickerView : UIPickerView {
         return selectedRowInComponent(1)
     }
     
+    public func totalInSec() -> Int {
+        return minutes()*60 + seconds()
+    }
+    
 }

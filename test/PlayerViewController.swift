@@ -9,18 +9,21 @@
 import UIKit
 import youtube_ios_player_helper
 import Darwin
+import Parse
 
 
 class PlayerViewController: UIViewController {
     
     var videoID: String!
     let maxTimeInterval = 30
-    @IBOutlet weak var playerView: YTPlayerView!
     @IBOutlet weak var start: TimePickerView!
     @IBOutlet weak var end: TimePickerView!
+    @IBOutlet weak var waitingView: UIActivityIndicatorView!
+    @IBOutlet weak var playerView: YTPlayerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        waitingForInfo()
         playerView.loadWithVideoId(videoID)
         start.delegate = self
         end.delegate = self
@@ -33,12 +36,40 @@ class PlayerViewController: UIViewController {
         return Int(floor(playerView.duration()/60))
     }
     
+    func waitingForInfo() {
+        waitingView.startAnimating()
+        start.hidden = true
+        end.hidden = true
+    }
+    
+    func infoReceived() {
+        waitingView.stopAnimating()
+        waitingView.hidden = true
+        start.hidden = false
+        end.hidden = false
+    }
+    
     func seconds() -> Int {
         return Int(playerView.duration()) - minutes() * 60
     }
     
+    func duration() -> Int {
+        if (end.minutes() == 0){
+            return end.seconds() + 1
+        } else {
+            return 60 - start.seconds() + end.seconds()
+        }
+    }
     
     @IBAction func save(sender: AnyObject) {
+        let post = PFObject(className : "Post")
+        post["videoID"] = videoID
+        post["user"] = PFUser.currentUser()
+        post["start"] = start.totalInSec()
+        post["duration"] = duration()
+        post.saveInBackgroundWithBlock { (success: Bool, error: NSError?) in
+            print("succefully uploaded, im a boss")
+        }
     }
 }
 
@@ -107,6 +138,7 @@ extension PlayerViewController : UIPickerViewDelegate {
 extension PlayerViewController : YTPlayerViewDelegate {
 
     func playerViewDidBecomeReady(playerView: YTPlayerView) {
+        infoReceived()
         start.reloadAllComponents()
         end.reloadAllComponents()
     }
