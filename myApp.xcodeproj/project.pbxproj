@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		660196321D3F4A08001B1EF8 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660196311D3F4A08001B1EF8 /* Like.swift */; };
 		A9E1043538750CDF34B0D64F /* Pods_myAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F6A8CD2065F078B253504F6 /* Pods_myAppUITests.framework */; };
 		B5142DEE750CA0281F07B2D9 /* Pods_myAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7951F73529AD5B2159463BBE /* Pods_myAppTests.framework */; };
 		BA3B8E2B1D395750004D8563 /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3B8E2A1D395750004D8563 /* TimePickerView.swift */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		183B8CE496EBE57BFB5E38E9 /* Pods-myApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-myApp/Pods-myApp.debug.xcconfig"; sourceTree = "<group>"; };
 		5F6A8CD2065F078B253504F6 /* Pods_myAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_myAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		660196311D3F4A08001B1EF8 /* Like.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
 		7951F73529AD5B2159463BBE /* Pods_myAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_myAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		91A75B62F057C0F888B36231 /* Pods-myAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-myAppTests/Pods-myAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9D75B920C53C2FFCF9570BA4 /* Pods-myAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-myAppUITests/Pods-myAppUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 			children = (
 				BA49F31C1D3D931900D53474 /* User.swift */,
 				BA49F31E1D3D9E5500D53474 /* Post.swift */,
+				660196311D3F4A08001B1EF8 /* Like.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 				BA59735A1D36B24B00201D2F /* SearchViewController.swift in Sources */,
 				BA59738A1D36E38900201D2F /* httpHelper.swift in Sources */,
 				BA59738C1D36FC3300201D2F /* CustomCell.swift in Sources */,
+				660196321D3F4A08001B1EF8 /* Like.swift in Sources */,
 				BA49F31D1D3D931900D53474 /* User.swift in Sources */,
 				BA5973581D36B24B00201D2F /* AppDelegate.swift in Sources */,
 				BA49F31F1D3D9E5500D53474 /* Post.swift in Sources */,

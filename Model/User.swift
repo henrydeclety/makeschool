@@ -19,7 +19,6 @@ public class User : PFUser {
     }
     
     func getPosts(sender : HomeViewController) {
-        if (posts == nil){
             findLinksQuery().findObjectsInBackgroundWithBlock({ (results :[PFObject]?, error : NSError?) in
                 guard error == nil else {
                     print("Error while fetching posts from Parse")
@@ -30,7 +29,6 @@ public class User : PFUser {
                     sender.display(self)
                 }
             })
-        }
     }
     
     func findLinksQuery() -> PFQuery {

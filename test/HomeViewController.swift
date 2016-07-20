@@ -18,8 +18,12 @@ public class HomeViewController: UIViewController {
     @IBOutlet weak var playerView: YTPlayerView!
     var nextUsers : [User] = []
     var currentPosts : [Post] = []
-    var currentIndex : Int = 0
+    var currentUser : User?
+    private var firstRound = true
+    
+    //cte
     let ended = 1
+    let thresholdToReloadUsers = 2
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +31,18 @@ public class HomeViewController: UIViewController {
         reloadNextUsers()
     }
     
-    @IBAction func next(sender: AnyObject) {
+    
+    @IBAction func nextUser(sender: AnyObject) {
+        Like.addLike(from: PFUser.currentUser() as! User, to: currentUser!, bool: false)
+        consumeUser()
+    }
+    
+    @IBAction func like(sender: AnyObject) {
+        Like.addLike(from: PFUser.currentUser() as! User, to: currentUser!, bool: true)
+        consumeUser()
+    }
+    
+    func nextPost(sender: AnyObject) {
         if (!currentPosts.isEmpty){
             playPost(currentPosts.removeFirst(), first: false)
         } else {
@@ -43,18 +58,30 @@ public class HomeViewController: UIViewController {
             }
             self.nextUsers = self.nextUsers + (results as? [User] ?? [])
             
-        self.nextUsers.first!.getPosts(self)
-            
+            //Consume first user
+            if(self.firstRound){
+                self.firstRound = false
+                self.consumeUser()
+            }
         })
+    }
+    
+    func consumeUser(){
+        if(nextUsers.count < thresholdToReloadUsers){
+            reloadNextUsers()
+        }
+        currentUser = nextUsers.removeFirst()
+        currentUser!.getPosts(self)
     }
     
     public func display(user : User){
         currentPosts = user.posts!
         
         //feeling in display info
-        descriptionView.text = user["description"]! as! String
-        age.text = String(user["age"]! as! Int)
-        sex.text = user["sex"]! as! Bool ? "Man" :  "Woman"
+        descriptionView.text = user["description"] as? String ?? ""
+        
+        age.text = String(user["age"] as! Int)
+        sex.text = user["sex"] as! Bool ? "Man" :  "Woman"
         
         playPost(currentPosts.removeFirst(), first: true)
         
@@ -81,7 +108,7 @@ extension HomeViewController : YTPlayerViewDelegate {
 
     public func playerView(playerView: YTPlayerView, didChangeToState state: YTPlayerState) {
         if (state.rawValue == ended){
-            next(self)
+            nextPost(self)
         } else if (state.rawValue == 5){
             playerView.playVideo()
         }

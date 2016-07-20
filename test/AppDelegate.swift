@@ -18,12 +18,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //parse initialization
         let configuration = ParseClientConfiguration {
             $0.applicationId = "myApp"
             $0.server = "https://myApp-meet.herokuapp.com/parse"
         }
         Parse.initializeWithConfiguration(configuration)
         
+        //fake login
         do {
             try PFUser.logInWithUsername("test", password: "test")
         } catch {
@@ -36,6 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("No logged in user :(")
         }
         
+        //public read and private write
+        let acl = PFACL()
+        acl.publicReadAccess = true
+        PFACL.setDefaultACL(acl, withAccessForCurrentUser: true)
         return true
     }
 
