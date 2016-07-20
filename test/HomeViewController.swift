@@ -10,14 +10,29 @@ import UIKit
 import Parse
 import youtube_ios_player_helper
 
-class HomeViewController: UIViewController {
+public class HomeViewController: UIViewController {
 
+    @IBOutlet weak var descriptionView: UITextView!
+    @IBOutlet weak var sex: UILabel!
+    @IBOutlet weak var age: UILabel!
     @IBOutlet weak var playerView: YTPlayerView!
     var nextUsers : [User] = []
+    var currentPosts : [Post] = []
+    var currentIndex : Int = 0
+    let ended = 1
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        playerView.delegate = self
         reloadNextUsers()
+    }
+    
+    @IBAction func next(sender: AnyObject) {
+        if (!currentPosts.isEmpty){
+            playPost(currentPosts.removeFirst(), first: false)
+        } else {
+            print("done")
+        }
     }
     
     func reloadNextUsers() {
@@ -28,9 +43,49 @@ class HomeViewController: UIViewController {
             }
             self.nextUsers = self.nextUsers + (results as? [User] ?? [])
             
-            self.playerView.loadWithVideoId(self.nextUsers.first!.getPosts()?.first!["videoID"]! as! String)
+        self.nextUsers.first!.getPosts(self)
             
         })
     }
     
+    public func display(user : User){
+        currentPosts = user.posts!
+        
+        //feeling in display info
+        descriptionView.text = user["description"]! as! String
+        age.text = String(user["age"]! as! Int)
+        sex.text = user["sex"]! as! Bool ? "Man" :  "Woman"
+        
+        playPost(currentPosts.removeFirst(), first: true)
+        
+    }
+    
+    public func playPost(post : Post, first : Bool){
+        let dico = NSMutableDictionary()
+        dico.setObject(0, forKey: "autohide")
+        dico.setObject(1, forKey: "playsinline")
+        dico.setObject(0, forKey: "rel")
+        dico.setObject("http://www.youtube.com", forKey: "origin")
+        dico.setObject(post["start"]! as! Float, forKey: "start")
+        dico.setObject(post["end"]! as! Float, forKey: "end")
+        if (first){
+            playerView.loadWithVideoId(post["videoID"] as! String, playerVars: dico as [NSObject : AnyObject])
+        } else {
+            playerView.cueVideoById(post["videoID"] as! String, startSeconds: post["start"]! as! Float, endSeconds: post["end"]! as! Float, suggestedQuality: YTPlaybackQuality.Auto)
+        }
+    }
+    
 }
+
+extension HomeViewController : YTPlayerViewDelegate {
+
+    public func playerView(playerView: YTPlayerView, didChangeToState state: YTPlayerState) {
+        if (state.rawValue == ended){
+            next(self)
+        } else if (state.rawValue == 5){
+            playerView.playVideo()
+        }
+    }
+
+}
+

@@ -10,9 +10,9 @@ import Foundation
 import Parse
 
 
-class Post : PFObject, PFSubclassing {
+public class Post : PFObject, PFSubclassing {
 
-    static func parseClassName() -> String {
+    public static func parseClassName() -> String {
         return "Post"
     }
     

@@ -339,6 +339,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yoe-lU-yeS">
                                 <rect key="frame" x="300" y="466" width="300" height="134"/>
                                 <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="next:" destination="nfg-XC-aux" eventType="touchUpInside" id="S9S-fv-U6b"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vCp-mh-mgH" customClass="YTPlayerView">
                                 <rect key="frame" x="0.0" y="198" width="600" height="268"/>
@@ -380,13 +383,20 @@
                     </view>
                     <navigationItem key="navigationItem" id="BXv-c4-xPK">
                         <leftBarButtonItems>
-                            <barButtonItem title="Settings" id="MnL-zE-o4f"/>
+                            <barButtonItem title="Settings" id="MnL-zE-o4f">
+                                <connections>
+                                    <segue destination="Igy-qI-UkJ" kind="show" id="Guz-Hv-l91"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem title="Profile" id="Gqe-Ey-5eo"/>
                         </leftBarButtonItems>
                         <barButtonItem key="rightBarButtonItem" title="Matches" id="u6n-nB-X5T"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="age" destination="3p8-Sx-7k8" id="dCy-ZF-dcI"/>
+                        <outlet property="descriptionView" destination="jNh-ha-UOI" id="omq-af-YHJ"/>
                         <outlet property="playerView" destination="vCp-mh-mgH" id="htP-bW-1Ti"/>
+                        <outlet property="sex" destination="mgL-YK-9p4" id="crY-AQ-eml"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="72R-Bl-9Ts" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -66,9 +66,12 @@ class PlayerViewController: UIViewController {
         post["videoID"] = videoID
         post["user"] = PFUser.currentUser()
         post["start"] = start.totalInSec()
+        post["end"] = duration() + start.totalInSec()
         post["duration"] = duration()
         post.saveInBackgroundWithBlock { (success: Bool, error: NSError?) in
-            print("succefully uploaded, im a boss")
+            if (success){
+                print("succefully uploaded, im a boss")
+            }
         }
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 import Parse
 
-class User : PFUser {
+public class User : PFUser {
 
     var posts : [Post]?
     
@@ -18,7 +18,7 @@ class User : PFUser {
         return userquery!
     }
     
-    func getPosts() -> [Post]? {
+    func getPosts(sender : HomeViewController) {
         if (posts == nil){
             findLinksQuery().findObjectsInBackgroundWithBlock({ (results :[PFObject]?, error : NSError?) in
                 guard error == nil else {
@@ -26,10 +26,10 @@ class User : PFUser {
                     return
                 }
                 self.posts = results as? [Post] ?? []
+                if (!(self.posts?.isEmpty)!) {
+                    sender.display(self)
+                }
             })
-            return posts
-        } else {
-            return posts
         }
     }
     
