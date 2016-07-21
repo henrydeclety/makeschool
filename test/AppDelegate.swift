@@ -43,6 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let acl = PFACL()
         acl.publicReadAccess = true
         PFACL.setDefaultACL(acl, withAccessForCurrentUser: true)
+        
+        let location = LocationManager()
+        location.test()
+        
         return true
     }
 

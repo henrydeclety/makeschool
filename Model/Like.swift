@@ -49,7 +49,20 @@ public class Like: PFObject, PFSubclassing {
         query2.whereKey("user1", equalTo: user1)
         query2.whereKey("user2", equalTo: user2)
         
+     //  return PFQuery.orQueryWithSubqueries([query1,query2])
+        return query(user1).whereKey("user2", matchesKey: "user2", inQuery: query(user2))
+    }
+    
+    public static func query(user : User) -> PFQuery {
+        let query1 = PFQuery(className: "Like")
+        query1.whereKey("user1", equalTo: user)
+        let query2 = PFQuery(className: "Like")
+        query2.whereKey("user2", equalTo: user)
         return PFQuery.orQueryWithSubqueries([query1,query2])
     }
-
+    
+    public static func matches(user : User) -> PFQuery {
+        let result = query(user).whereKey("user1Like", equalTo: true).whereKey("user2Like", equalTo: true)
+        return result.includeKeys(["user1","user2"])
+    }
 }

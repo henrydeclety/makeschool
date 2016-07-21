@@ -12,7 +12,7 @@ import youtube_ios_player_helper
 
 public class HomeViewController: UIViewController {
 
-    @IBOutlet weak var descriptionView: UITextView!
+    @IBOutlet weak var descriptionView: UILabel!
     @IBOutlet weak var sex: UILabel!
     @IBOutlet weak var age: UILabel!
     @IBOutlet weak var playerView: YTPlayerView!
