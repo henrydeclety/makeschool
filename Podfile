@@ -7,6 +7,9 @@ target 'myApp' do
 
   pod "youtube-ios-player-helper", "~> 0.1.4"
   pod 'Parse'
+  pod 'ParseFacebookUtilsV4'
+  pod 'ParseUI'
+  pod "ConvenienceKit"
 
   target 'myAppTests' do
     inherit! :search_paths
