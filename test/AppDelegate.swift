@@ -8,6 +8,9 @@
 
 import UIKit
 import Parse
+import FBSDKCoreKit
+import ParseUI
+import ParseFacebookUtilsV4
 
 
 @UIApplicationMain
@@ -45,18 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         Parse.initializeWithConfiguration(configuration)
         
-        //fake login
-        do {
-            try PFUser.logInWithUsername("test", password: "test")
-        } catch {
-            print("Unable to log in")
-        }
-        
-        if let currentUser = PFUser.currentUser() {
-            print("\(currentUser.username!) logged in successfully")
-        } else {
-            print("No logged in user :(")
-        }
         
         //public read and private write
         let acl = PFACL()
@@ -81,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // 3
             // if we have a user, set the TabBarController to be the initial view controller
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            startViewController = storyboard.instantiateViewControllerWithIdentifier("TabBarController") as! HomeController
+            startViewController = storyboard.instantiateViewControllerWithIdentifier("HomeController") as! HomeViewController
         } else {
             // 4
             // Otherwise set the LoginViewController to be the first

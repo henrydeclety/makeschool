@@ -305,7 +305,7 @@
         <!--Home-->
         <scene sceneID="Cwr-PK-rx9">
             <objects>
-                <viewController storyboardIdentifier="HomeControler" title="Home" id="nfg-XC-aux" customClass="HomeViewController" customModule="myApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeController" title="Home" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nfg-XC-aux" customClass="HomeViewController" customModule="myApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jRp-1o-qis"/>
                         <viewControllerLayoutGuide type="bottom" id="wtb-vu-OaC"/>
@@ -336,18 +336,14 @@
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1bO-Zu-tNh">
                                 <rect key="frame" x="0.0" y="466" width="300" height="134"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Next"/>
                                 <connections>
                                     <action selector="nextUser:" destination="nfg-XC-aux" eventType="touchUpInside" id="s8f-ec-rma"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vCp-mh-mgH" customClass="YTPlayerView">
-                                <rect key="frame" x="0.0" y="198" width="600" height="268"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yoe-lU-yeS">
-                                <rect key="frame" x="300" y="466" width="300" height="134"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="300" y="533" width="300" height="67"/>
+                                <state key="normal" title="Like"/>
                                 <connections>
                                     <action selector="like:" destination="nfg-XC-aux" eventType="touchUpInside" id="yQe-Mo-gxI"/>
                                 </connections>
@@ -358,12 +354,38 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O4s-0i-YkA">
+                                <rect key="frame" x="300" y="466" width="300" height="67"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0kp-aq-Oti">
+                                        <rect key="frame" x="0.0" y="0.0" width="75" height="67"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SMb-DY-5qD">
+                                        <rect key="frame" x="75" y="0.0" width="150" height="67"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vpv-U9-dye">
+                                        <rect key="frame" x="225" y="0.0" width="75" height="67"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="0kp-aq-Oti" firstAttribute="width" secondItem="SMb-DY-5qD" secondAttribute="width" multiplier="1:2" id="Tgg-nk-JW3"/>
+                                    <constraint firstItem="0kp-aq-Oti" firstAttribute="width" secondItem="Vpv-U9-dye" secondAttribute="width" id="ZM2-CE-tTB"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vCp-mh-mgH" customClass="YTPlayerView">
+                                <rect key="frame" x="0.0" y="198" width="600" height="268"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="vCp-mh-mgH" firstAttribute="height" secondItem="Yoe-lU-yeS" secondAttribute="height" multiplier="2:1" id="2a8-g7-TYU"/>
                             <constraint firstItem="pSB-2w-RCJ" firstAttribute="top" secondItem="jRp-1o-qis" secondAttribute="bottom" id="2or-go-Yay"/>
+                            <constraint firstItem="O4s-0i-YkA" firstAttribute="leading" secondItem="1bO-Zu-tNh" secondAttribute="trailing" id="5g6-VY-GTJ"/>
                             <constraint firstItem="Yoe-lU-yeS" firstAttribute="leading" secondItem="1bO-Zu-tNh" secondAttribute="trailing" id="6SJ-Xg-C8O"/>
+                            <constraint firstItem="O4s-0i-YkA" firstAttribute="height" secondItem="Yoe-lU-yeS" secondAttribute="height" id="6k2-wj-6e4"/>
                             <constraint firstItem="1bO-Zu-tNh" firstAttribute="leading" secondItem="2HE-wr-O4H" secondAttribute="leading" id="BiA-au-N8z"/>
                             <constraint firstItem="Cac-4n-zno" firstAttribute="top" secondItem="jRp-1o-qis" secondAttribute="bottom" id="CcB-Oo-OWj"/>
                             <constraint firstItem="vCp-mh-mgH" firstAttribute="trailing" secondItem="Cac-4n-zno" secondAttribute="trailing" id="Ee0-Kd-I1A"/>
@@ -371,12 +393,15 @@
                             <constraint firstItem="vCp-mh-mgH" firstAttribute="top" secondItem="pSB-2w-RCJ" secondAttribute="bottom" id="Gr2-xD-keF"/>
                             <constraint firstItem="1bO-Zu-tNh" firstAttribute="width" secondItem="Yoe-lU-yeS" secondAttribute="width" id="L1v-jQ-FSS"/>
                             <constraint firstItem="vCp-mh-mgH" firstAttribute="leading" secondItem="2HE-wr-O4H" secondAttribute="leading" id="OYH-c5-MPu"/>
+                            <constraint firstItem="vCp-mh-mgH" firstAttribute="height" secondItem="1bO-Zu-tNh" secondAttribute="height" multiplier="2:1" id="S0I-3r-q91"/>
+                            <constraint firstAttribute="trailing" secondItem="O4s-0i-YkA" secondAttribute="trailing" id="SNt-ox-NHO"/>
                             <constraint firstItem="pSB-2w-RCJ" firstAttribute="width" secondItem="Cac-4n-zno" secondAttribute="width" multiplier="3:2" id="WXG-PM-4Yd"/>
                             <constraint firstItem="pSB-2w-RCJ" firstAttribute="leading" secondItem="2HE-wr-O4H" secondAttribute="leading" id="YkA-Fh-nWw"/>
                             <constraint firstItem="Cac-4n-zno" firstAttribute="leading" secondItem="pSB-2w-RCJ" secondAttribute="trailing" id="Zcc-v9-gAY"/>
                             <constraint firstItem="wtb-vu-OaC" firstAttribute="top" secondItem="1bO-Zu-tNh" secondAttribute="bottom" id="cmb-Qb-8Ue"/>
                             <constraint firstItem="mgL-YK-9p4" firstAttribute="height" secondItem="vCp-mh-mgH" secondAttribute="height" multiplier="1:2" id="cws-cM-uHd"/>
                             <constraint firstItem="Yoe-lU-yeS" firstAttribute="leading" secondItem="1bO-Zu-tNh" secondAttribute="trailing" id="flt-SM-AP0"/>
+                            <constraint firstItem="O4s-0i-YkA" firstAttribute="top" secondItem="vCp-mh-mgH" secondAttribute="bottom" id="hfu-3h-bU7"/>
                             <constraint firstItem="Yoe-lU-yeS" firstAttribute="top" secondItem="vCp-mh-mgH" secondAttribute="bottom" id="pto-Jb-xj3"/>
                             <constraint firstItem="1bO-Zu-tNh" firstAttribute="top" secondItem="vCp-mh-mgH" secondAttribute="bottom" id="rco-4R-d6T"/>
                             <constraint firstAttribute="trailing" secondItem="Cac-4n-zno" secondAttribute="trailing" id="sJO-td-LZK"/>
@@ -384,11 +409,14 @@
                             <constraint firstItem="pSB-2w-RCJ" firstAttribute="height" secondItem="Cac-4n-zno" secondAttribute="height" id="tic-SQ-gN0"/>
                             <constraint firstItem="vCp-mh-mgH" firstAttribute="height" secondItem="Cac-4n-zno" secondAttribute="height" multiplier="2:1" id="uyB-tl-Je7"/>
                             <constraint firstItem="wtb-vu-OaC" firstAttribute="top" secondItem="Yoe-lU-yeS" secondAttribute="bottom" id="x2b-C6-Vc1"/>
+                            <constraint firstItem="Yoe-lU-yeS" firstAttribute="top" secondItem="O4s-0i-YkA" secondAttribute="bottom" id="yde-HK-gWY"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="2a8-g7-TYU"/>
                                 <exclude reference="cws-cM-uHd"/>
                                 <exclude reference="tFJ-yO-BsR"/>
+                                <exclude reference="pto-Jb-xj3"/>
                             </mask>
                         </variation>
                     </view>
@@ -411,6 +439,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="age" destination="3p8-Sx-7k8" id="dCy-ZF-dcI"/>
                         <outlet property="descriptionView" destination="pSB-2w-RCJ" id="C7n-yX-aYH"/>

@@ -660,7 +660,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.henrydeclety.myApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.henrydeclety.musicSocializer;
 				PRODUCT_NAME = myApp;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "test/myApp-Bridging-Header.h";
@@ -676,7 +676,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.henrydeclety.myApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.henrydeclety.musicSocializer;
 				PRODUCT_NAME = myApp;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "test/myApp-Bridging-Header.h";

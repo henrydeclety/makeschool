@@ -13,6 +13,8 @@ public class Constants {
     public static let NotDetermined : Int32 = 0
     public static let Restricted : Int32 = 1
     public static let Denied : Int32 = 2
+    
+    public static let fbGraphRequestParameters : [NSObject : AnyObject]! = ["fields": "id, name, first_name, last_name, email, age_range, gender"]
 
     
 }

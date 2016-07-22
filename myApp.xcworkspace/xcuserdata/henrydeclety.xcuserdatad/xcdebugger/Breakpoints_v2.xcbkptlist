@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "helpers/LocationManager.swift"
-            timestampString = "490756903.275827"
+            filePath = "Model/User.swift"
+            timestampString = "490841677.823161"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "test()"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "saveInBackgroundWithBlock(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,29 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "helpers/LocationManager.swift"
-            timestampString = "490756904.676064"
+            filePath = "Helpers/ParseLoginHelper.swift"
+            timestampString = "490841869.957455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
-            landmarkName = "test()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "helpers/LocationManager.swift"
-            timestampString = "490756973.080716"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "test()"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "saveUserInfo(_:user:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

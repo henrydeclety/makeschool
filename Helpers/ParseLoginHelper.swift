@@ -31,6 +31,30 @@ class ParseLoginHelper : NSObject {
 
 extension ParseLoginHelper : PFLogInViewControllerDelegate {
     
+    func saveUserInfo(result: [String : AnyObject], user : User) {
+        // assign Facebook name to PFUser
+        
+        user.username = result["name"] as? String
+        user.fbID = result["id"] as? String
+      //  user.age = result["age_range"]["min"] as? Int how to do this ?
+        user.firstName = result["first_name"] as? String
+        user.lastName = result["last_name"] as? String
+     //   user.email = result["email"] as? String
+        user.sex = (result["gender"] as! String) == "male"
+        
+        // store PFUser
+        user.saveInBackgroundWithBlock({ (success, error) -> Void in
+            if (success) {
+                // updated username could be stored -> call success
+                self.callback(user, error)
+            } else {
+                // updating username failed -> hand error to callback
+                self.callback(nil, error)
+            }
+        })
+        
+    }
+    
     
     func logInViewController(logInController: PFLogInViewController, didLogInUser user: PFUser) {
         // Determine if this is a Facebook login
@@ -41,26 +65,14 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
             self.callback(user, nil)
         } else {
             // if this is a Facebook login, fetch the username from Facebook
-            FBSDKGraphRequest(graphPath: "me", parameters: nil).startWithCompletionHandler {
+            FBSDKGraphRequest(graphPath: "me", parameters: Constants.fbGraphRequestParameters).startWithCompletionHandler {
                 (connection: FBSDKGraphRequestConnection!, result: AnyObject?, error: NSError?) -> Void in
                 if let error = error {
                     // Facebook Error? -> hand error to callback
                     self.callback(nil, error)
                 }
-                
-                if let fbUsername = result?["name"] as? String {
-                    // assign Facebook name to PFUser
-                    user.username = fbUsername
-                    // store PFUser
-                    user.saveInBackgroundWithBlock({ (success, error) -> Void in
-                        if (success) {
-                            // updated username could be stored -> call success
-                            self.callback(user, error)
-                        } else {
-                            // updating username failed -> hand error to callback
-                            self.callback(nil, error)
-                        }
-                    })
+                if (result != nil) {
+                    self.saveUserInfo(result as! [String : AnyObject], user: user as! User)
                 } else {
                     // cannot retrieve username? -> create error and hand it to callback
                     //            let userInfo = [NSLocalizedDescriptionKey : ParseLoginHelper.usernameNotFoundLocalizedDescription]
@@ -80,6 +92,7 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
 extension ParseLoginHelper : PFSignUpViewControllerDelegate {
     
     func signUpViewController(signUpController: PFSignUpViewController, didSignUpUser user: PFUser) {
+        
         self.callback(user, nil)
     }
     
