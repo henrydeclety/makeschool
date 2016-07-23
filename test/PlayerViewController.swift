@@ -24,7 +24,7 @@ class PlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         waitingForInfo()
-        playerView.loadWithVideoId(videoID)
+        playerView.loadWithVideoId(videoID, playerVars: Constants.ytParams() as [NSObject : AnyObject])
         start.delegate = self
         end.delegate = self
         start.dataSource = self
@@ -33,6 +33,7 @@ class PlayerViewController: UIViewController {
     }
     
     func minutes() -> Int {
+        print(playerView.duration())
         return Int(floor(playerView.duration()/60))
     }
     
@@ -86,7 +87,7 @@ extension PlayerViewController : UIPickerViewDataSource {
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (pickerView.tag == 0){
             if (component == 0){
-                return minutes()
+                return minutes() + 1
             } else {
                 if (start.minutes() == minutes()) {return seconds()}
                 else {return 60}
@@ -99,10 +100,13 @@ extension PlayerViewController : UIPickerViewDataSource {
                     return 1
                 }
             } else {
+                var maxSec = 60
                 if (end.minutes() == 0){
-                    return min(60 - (start.seconds()+1),maxTimeInterval)
+                    maxSec = start.minutes() == minutes() ? seconds() + 1 : 60
+                    return min(maxSec - (start.seconds()+1),maxTimeInterval)
                 } else {
-                    return min((start.seconds()+1) - 30, maxTimeInterval)
+                    maxSec = start.minutes() == minutes()-1 ? seconds() + 1 : 60
+                    return min(maxSec, maxTimeInterval - 60 + (start.seconds()+1), maxTimeInterval)
                 }
             }
         }

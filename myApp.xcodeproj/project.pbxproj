@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		660196321D3F4A08001B1EF8 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660196311D3F4A08001B1EF8 /* Like.swift */; };
+		665FB5AA1D42DDFB0093AEEE /* SpotifyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 665FB5A91D42DDFB0093AEEE /* SpotifyHelper.swift */; };
 		6663AC3F1D404CA00063D20F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6663AC3E1D404CA00063D20F /* Constants.swift */; };
 		6663AC431D4050EB0063D20F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6663AC421D4050EB0063D20F /* LocationManager.swift */; };
 		669FB30B1D4085A600DDE6FD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669FB30A1D4085A600DDE6FD /* ProfileViewController.swift */; };
 		669FB30D1D4086EC00DDE6FD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669FB30C1D4086EC00DDE6FD /* SettingsViewController.swift */; };
 		66D9D45F1D40ADB1005433D9 /* ParseLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D9D45E1D40ADB1005433D9 /* ParseLoginHelper.swift */; };
 		66D9D4611D40B63C005433D9 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D9D4601D40B63C005433D9 /* ErrorHandling.swift */; };
+		66DB4A971D42995A00C92A4E /* SpotifySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DB4A961D42995A00C92A4E /* SpotifySelectionViewController.swift */; };
+		66DB4A991D429BDA00C92A4E /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB4A981D429BDA00C92A4E /* Spotify.framework */; };
+		66DB4A9B1D42A63900C92A4E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB4A9A1D42A63900C92A4E /* AVFoundation.framework */; };
+		66DB4A9D1D42A64900C92A4E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB4A9C1D42A64900C92A4E /* SystemConfiguration.framework */; };
 		66E0802E1D400BF5001888EF /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E0802D1D400BF5001888EF /* MatchesViewController.swift */; };
 		66E080311D400F7F001888EF /* MatchesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E080301D400F7F001888EF /* MatchesCell.swift */; };
 		A9E1043538750CDF34B0D64F /* Pods_myAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F6A8CD2065F078B253504F6 /* Pods_myAppUITests.framework */; };
@@ -56,12 +61,17 @@
 		183B8CE496EBE57BFB5E38E9 /* Pods-myApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-myApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-myApp/Pods-myApp.debug.xcconfig"; sourceTree = "<group>"; };
 		5F6A8CD2065F078B253504F6 /* Pods_myAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_myAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		660196311D3F4A08001B1EF8 /* Like.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
+		665FB5A91D42DDFB0093AEEE /* SpotifyHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpotifyHelper.swift; path = Helpers/SpotifyHelper.swift; sourceTree = SOURCE_ROOT; };
 		6663AC3E1D404CA00063D20F /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Helpers/Constants.swift; sourceTree = SOURCE_ROOT; };
 		6663AC421D4050EB0063D20F /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		669FB30A1D4085A600DDE6FD /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		669FB30C1D4086EC00DDE6FD /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		66D9D45E1D40ADB1005433D9 /* ParseLoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseLoginHelper.swift; path = Helpers/ParseLoginHelper.swift; sourceTree = SOURCE_ROOT; };
 		66D9D4601D40B63C005433D9 /* ErrorHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
+		66DB4A961D42995A00C92A4E /* SpotifySelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifySelectionViewController.swift; sourceTree = "<group>"; };
+		66DB4A981D429BDA00C92A4E /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
+		66DB4A9A1D42A63900C92A4E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		66DB4A9C1D42A64900C92A4E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		66E0802D1D400BF5001888EF /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
 		66E080301D400F7F001888EF /* MatchesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesCell.swift; sourceTree = "<group>"; };
 		7951F73529AD5B2159463BBE /* Pods_myAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_myAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,7 +109,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66DB4A9D1D42A64900C92A4E /* SystemConfiguration.framework in Frameworks */,
+				66DB4A9B1D42A63900C92A4E /* AVFoundation.framework in Frameworks */,
 				DFA9F72352D0C707FD2FE827 /* Pods_myApp.framework in Frameworks */,
+				66DB4A991D429BDA00C92A4E /* Spotify.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +138,9 @@
 		06A05134C912FCBABC67C337 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				66DB4A9C1D42A64900C92A4E /* SystemConfiguration.framework */,
+				66DB4A9A1D42A63900C92A4E /* AVFoundation.framework */,
+				66DB4A981D429BDA00C92A4E /* Spotify.framework */,
 				E8280107B0C67103174ED5EF /* Pods_myApp.framework */,
 				7951F73529AD5B2159463BBE /* Pods_myAppTests.framework */,
 				5F6A8CD2065F078B253504F6 /* Pods_myAppUITests.framework */,
@@ -205,6 +221,7 @@
 				66E0802D1D400BF5001888EF /* MatchesViewController.swift */,
 				669FB30A1D4085A600DDE6FD /* ProfileViewController.swift */,
 				669FB30C1D4086EC00DDE6FD /* SettingsViewController.swift */,
+				66DB4A961D42995A00C92A4E /* SpotifySelectionViewController.swift */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -235,6 +252,7 @@
 				6663AC421D4050EB0063D20F /* LocationManager.swift */,
 				66D9D45E1D40ADB1005433D9 /* ParseLoginHelper.swift */,
 				66D9D4601D40B63C005433D9 /* ErrorHandling.swift */,
+				665FB5A91D42DDFB0093AEEE /* SpotifyHelper.swift */,
 			);
 			path = helpers;
 			sourceTree = "<group>";
@@ -506,6 +524,7 @@
 				BA59735A1D36B24B00201D2F /* SearchViewController.swift in Sources */,
 				BA59738A1D36E38900201D2F /* httpHelper.swift in Sources */,
 				BA59738C1D36FC3300201D2F /* CustomCell.swift in Sources */,
+				665FB5AA1D42DDFB0093AEEE /* SpotifyHelper.swift in Sources */,
 				660196321D3F4A08001B1EF8 /* Like.swift in Sources */,
 				66E0802E1D400BF5001888EF /* MatchesViewController.swift in Sources */,
 				BA49F31D1D3D931900D53474 /* User.swift in Sources */,
@@ -514,6 +533,7 @@
 				66D9D4611D40B63C005433D9 /* ErrorHandling.swift in Sources */,
 				6663AC3F1D404CA00063D20F /* Constants.swift in Sources */,
 				669FB30B1D4085A600DDE6FD /* ProfileViewController.swift in Sources */,
+				66DB4A971D42995A00C92A4E /* SpotifySelectionViewController.swift in Sources */,
 				BA5973581D36B24B00201D2F /* AppDelegate.swift in Sources */,
 				BA49F31F1D3D9E5500D53474 /* Post.swift in Sources */,
 				6663AC431D4050EB0063D20F /* LocationManager.swift in Sources */,
@@ -658,8 +678,32 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"Bolts\"",
+					"-framework",
+					"\"ConvenienceKit\"",
+					"-framework",
+					"\"FBSDKCoreKit\"",
+					"-framework",
+					"\"FBSDKLoginKit\"",
+					"-framework",
+					"\"Parse\"",
+					"-framework",
+					"\"ParseFacebookUtilsV4\"",
+					"-framework",
+					"\"ParseUI\"",
+					"-framework",
+					"\"youtube_ios_player_helper\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.henrydeclety.musicSocializer;
 				PRODUCT_NAME = myApp;
 				PROVISIONING_PROFILE = "";
@@ -674,8 +718,32 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"Bolts\"",
+					"-framework",
+					"\"ConvenienceKit\"",
+					"-framework",
+					"\"FBSDKCoreKit\"",
+					"-framework",
+					"\"FBSDKLoginKit\"",
+					"-framework",
+					"\"Parse\"",
+					"-framework",
+					"\"ParseFacebookUtilsV4\"",
+					"-framework",
+					"\"ParseUI\"",
+					"-framework",
+					"\"youtube_ios_player_helper\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.henrydeclety.musicSocializer;
 				PRODUCT_NAME = myApp;
 				PROVISIONING_PROFILE = "";

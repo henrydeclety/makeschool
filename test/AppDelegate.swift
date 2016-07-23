@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var parseLoginHelper: ParseLoginHelper!
+    var spotifyHelper = SpotifyHelper()
     
     override init() {
         super.init()
@@ -33,6 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let homeController = storyboard.instantiateViewControllerWithIdentifier("HomeController")
                 // 3
+                
+               // let navController = UINavigationController(rootViewController: homeController)
+                
                 self.window?.rootViewController!.presentViewController(homeController, animated:true, completion:nil)
             }
         }
@@ -54,10 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         acl.publicReadAccess = true
         PFACL.setDefaultACL(acl, withAccessForCurrentUser: true)
         
-        let location = LocationManager()
-        location.test()
-        
-        
         // Initialize Facebook
         // 1
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
@@ -72,15 +72,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // 3
             // if we have a user, set the TabBarController to be the initial view controller
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            startViewController = storyboard.instantiateViewControllerWithIdentifier("HomeController") as! HomeViewController
+            startViewController = storyboard.instantiateViewControllerWithIdentifier("HomeController") as! UINavigationController
         } else {
             // 4
             // Otherwise set the LoginViewController to be the first
             let loginViewController = PFLogInViewController()
             loginViewController.fields = [.UsernameAndPassword, .LogInButton, .SignUpButton, .PasswordForgotten, .Facebook]
             loginViewController.delegate = parseLoginHelper
-            loginViewController.signUpController?.delegate = parseLoginHelper
             
+            let signUpViewController = PFSignUpViewController()
+            
+            
+            signUpViewController.delegate = parseLoginHelper
+            signUpViewController.fields = [.Additional,.Additional,.Additional,.UsernameAndPassword,.SignUpButton,.Email,.DismissButton]
+            
+            signUpViewController.signUpView?.additionalField?.placeholder = "First Name"
+            signUpViewController.signUpView?.additionalField?.placeholder = "Last Name"
+            let ageField = signUpViewController.signUpView?.additionalField
+            ageField?.keyboardType = UIKeyboardType.NumberPad
+            ageField?.placeholder = "age"
+            signUpViewController.signUpView?.additionalField?.placeholder = "Sex (Male/Female)"
+            
+            loginViewController.signUpController = signUpViewController
             startViewController = loginViewController
         }
         
@@ -99,7 +112,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        
+        // Ask SPTAuth if the URL given is a Spotify authentication callback
+        SPTAuth.defaultInstance().canHandleURL(url)
+        SPTAuth.defaultInstance().handleAuthCallbackWithTriggeredAuthURL(url) { (error, session) in
+            if (error != nil){
+                NSLog("*** Auth error: %@", error)
+                return
+            }
+            self.spotifyHelper.setSession(session)
+        }
+        FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        
+        return true
     }
 
     func applicationWillResignActive(application: UIApplication) {

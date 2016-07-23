@@ -2,8 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>because</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>spotify-action</string>
 		<string>fbauth2</string>
 	</array>
 	<key>CFBundleURLTypes</key>
@@ -11,8 +14,14 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb855296237936322</string>
+				<string>musicsocializerhd</string>
 			</array>
+			<key>CFBundleURLName</key>
+			<string>com.henrydeclety.musicSocializerhd</string>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string></string>
 		</dict>
 	</array>
 	<key>FacebookDisplayName</key>

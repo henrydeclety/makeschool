@@ -32,7 +32,7 @@ class MatchesCell: UITableViewCell {
         descriptionView.text = user["description"] as? String ?? ""
         age = String(user["age"] as! Int)
         sex = user["sex"] as! Bool ? "Man" :  "Woman"
-        name = (user["name"] as! String)
+        name = (user["firstName"] as! String)
         title.text = name! + ", " + age!
     }
 

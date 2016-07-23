@@ -9,15 +9,16 @@
 import UIKit
 import Parse
 
-class LocationManager {
+class LocationManager : NSObject, CLLocationManagerDelegate {
     
     var manager : CLLocationManager?
     
     func test() {
         manager = CLLocationManager()
+        manager?.delegate = self
         switch CLLocationManager.authorizationStatus() {
-            case .NotDetermined : manager!.requestAlwaysAuthorization()
-            default : break
+        case .NotDetermined : manager!.requestAlwaysAuthorization()
+        default : break
         }
     }
     

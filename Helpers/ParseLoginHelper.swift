@@ -36,11 +36,20 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
         
         user.username = result["name"] as? String
         user.fbID = result["id"] as? String
-      //  user.age = result["age_range"]["min"] as? Int how to do this ?
+        let age : [String : AnyObject] = (result["age_range"] as? [String : AnyObject])!
+        user.ageMin = age["min"] as? Int
+        user.ageMax = age["max"] as? Int
+        user.birthday = result["user_birthday"] as? String
         user.firstName = result["first_name"] as? String
         user.lastName = result["last_name"] as? String
-     //   user.email = result["email"] as? String
         user.sex = (result["gender"] as! String) == "male"
+        user.about = result["about"] as? String
+        
+        // non-accessible avec mon compte : bio, about, email, birthday
+        
+        if let email = result["email"] as? String {
+            user.email = email
+        }
         
         // store PFUser
         user.saveInBackgroundWithBlock({ (success, error) -> Void in

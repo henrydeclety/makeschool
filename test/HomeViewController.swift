@@ -12,6 +12,7 @@ import youtube_ios_player_helper
 
 public class HomeViewController: UIViewController {
 
+    @IBOutlet weak var waitingView: UIActivityIndicatorView!
     @IBOutlet weak var descriptionView: UILabel!
     @IBOutlet weak var sex: UILabel!
     @IBOutlet weak var age: UILabel!
@@ -20,6 +21,7 @@ public class HomeViewController: UIViewController {
     var currentPosts : [Post] = []
     var currentUser : User?
     private var firstRound = true
+    var locationHelper = LocationManager()
     
     //cte
     let ended = 1
@@ -27,8 +29,11 @@ public class HomeViewController: UIViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        waitingView.hidden = false
+        waitingView.startAnimating()
         playerView.delegate = self
         reloadNextUsers()
+        locationHelper.test()
     }
     
     
@@ -82,17 +87,13 @@ public class HomeViewController: UIViewController {
         
         age.text = String(user["age"] as! Int)
         sex.text = user["sex"] as! Bool ? "Man" :  "Woman"
-        
+        waitingView.hidden = true
         playPost(currentPosts.removeFirst(), first: true)
         
     }
     
     public func playPost(post : Post, first : Bool){
-        let dico = NSMutableDictionary()
-        dico.setObject(0, forKey: "autohide")
-        dico.setObject(1, forKey: "playsinline")
-        dico.setObject(0, forKey: "rel")
-        dico.setObject("http://www.youtube.com", forKey: "origin")
+        let dico = Constants.ytParams()
         dico.setObject(post["start"]! as! Float, forKey: "start")
         dico.setObject(post["end"]! as! Float, forKey: "end")
         if (first){
@@ -114,5 +115,9 @@ extension HomeViewController : YTPlayerViewDelegate {
         }
     }
 
+}
+
+extension HomeViewController : CLLocationManagerDelegate {
+    
 }
 
