@@ -12,29 +12,53 @@ import Darwin
 import Parse
 
 
-class PlayerViewController: UIViewController {
+public class PlayerViewController: UIViewController {
     
-    var videoID: String!
-    let maxTimeInterval = 30
+    var post : Post!
+    var maxTimeInterval : Int!
+    @IBOutlet weak var nameSPT: UILabel!
+    @IBOutlet weak var artistSPT: UILabel!
+    @IBOutlet weak var timeSTP: UILabel!
     @IBOutlet weak var start: TimePickerView!
     @IBOutlet weak var end: TimePickerView!
     @IBOutlet weak var waitingView: UIActivityIndicatorView!
-    @IBOutlet weak var playerView: YTPlayerView!
+    @IBOutlet weak var ytPlayerView: YTPlayerView!
+    @IBOutlet weak var sptPlayerView: UIView!
     
-    override func viewDidLoad() {
+    
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        setDelegates()
+        if post.isYoutube() {
+            setAsYT()
+        } else {
+            setAsSPT()
+        }
+    }
+    
+    func setAsYT() {
         waitingForInfo()
-        playerView.loadWithVideoId(videoID, playerVars: Constants.ytParams() as [NSObject : AnyObject])
+        sptPlayerView.hidden = true
+        ytPlayerView.loadWithVideoId(post.videoID!, playerVars: Constants.ytParams() as [NSObject : AnyObject])
+        ytPlayerView.delegate = self
+    }
+    
+    func setAsSPT() {
+        nameSPT.text = post.name
+        artistSPT.text = post.artist
+        waitingView.hidden = true
+        ytPlayerView.hidden = true
+    }
+    
+    func setDelegates() {
         start.delegate = self
         end.delegate = self
         start.dataSource = self
         end.dataSource = self
-        playerView.delegate = self
     }
     
     func minutes() -> Int {
-        print(playerView.duration())
-        return Int(floor(playerView.duration()/60))
+        return duration()/60
     }
     
     func waitingForInfo() {
@@ -50,41 +74,58 @@ class PlayerViewController: UIViewController {
         end.hidden = false
     }
     
-    func seconds() -> Int {
-        return Int(playerView.duration()) - minutes() * 60
+    func duration() -> Int {
+        if let total = post.totalDuration {
+            return total
+        } else {
+            let test = Int(ytPlayerView.duration())
+            post.totalDuration = test != 0 ? test : nil
+            return test
+        }
     }
     
-    func duration() -> Int {
+    func seconds() -> Int {
+        return duration() - minutes() * 60
+    }
+    
+    func extractDuration() -> Int {
         if (end.minutes() == 0){
             return end.seconds() + 1
         } else {
             return 60 - start.seconds() + end.seconds()
         }
     }
-    
-    @IBAction func save(sender: AnyObject) {
-        let post = PFObject(className : "Post")
-        post["videoID"] = videoID
-        post["user"] = PFUser.currentUser()
-        post["start"] = start.totalInSec()
-        post["end"] = duration() + start.totalInSec()
-        post["duration"] = duration()
-        post.saveInBackgroundWithBlock { (success: Bool, error: NSError?) in
-            if (success){
-                print("succefully uploaded, im a boss")
-            }
+    @IBAction func playSPT(sender: AnyObject) {
+        if !SpotifyHelper.isPlaying() {
+            SpotifyHelper.play(post.playableURI!)
+        } else {
+            SpotifyHelper.play()
         }
+    }
+    
+    @IBAction func pauseSPT(sender: AnyObject) {
+        SpotifyHelper.pause()
+    }
+    
+    @IBAction func back(sender: AnyObject) {
+        pauseSPT(sender)
+    }
+  
+    public func save() {
+        pauseSPT(self)
+        post.save(start: start.totalInSec(), end: extractDuration() + start.totalInSec(), duration: extractDuration())
     }
 }
 
+
 extension PlayerViewController : UIPickerViewDataSource {
 
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 2
     }
     
 
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (pickerView.tag == 0){
             if (component == 0){
                 return minutes() + 1
@@ -118,7 +159,7 @@ extension PlayerViewController : UIPickerViewDataSource {
 
 extension PlayerViewController : UIPickerViewDelegate {
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 0){
             return String(row)
         } else {
@@ -134,7 +175,7 @@ extension PlayerViewController : UIPickerViewDelegate {
         }
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
+    public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
         start.reloadAllComponents()
         end.reloadAllComponents()
     }
@@ -144,11 +185,12 @@ extension PlayerViewController : UIPickerViewDelegate {
 
 extension PlayerViewController : YTPlayerViewDelegate {
 
-    func playerViewDidBecomeReady(playerView: YTPlayerView) {
+    public func playerViewDidBecomeReady(playerView: YTPlayerView) {
         infoReceived()
         start.reloadAllComponents()
         end.reloadAllComponents()
     }
+    
     
 }
 

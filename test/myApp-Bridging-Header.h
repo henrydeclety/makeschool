@@ -6,5 +6,8 @@
 //  Copyright © 2016 Henry Declety. All rights reserved.
 //
 
+#ifndef PartyBot_Bridging_Header_h
+#define PartyBot_Bridging_Header_h
 #import <Spotify/Spotify.h>
-//#import "AppDelegate.h"
+
+#endif /* PartyBot_Bridging_Header_h */

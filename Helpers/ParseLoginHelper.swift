@@ -52,7 +52,7 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
         }
         
         // store PFUser
-        user.saveInBackgroundWithBlock({ (success, error) -> Void in
+        user.saveToParse({ (success, error) -> Void in
             if (success) {
                 // updated username could be stored -> call success
                 self.callback(user, error)

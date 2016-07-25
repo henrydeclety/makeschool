@@ -76,7 +76,7 @@ public class HomeViewController: UIViewController {
             reloadNextUsers()
         }
         currentUser = nextUsers.removeFirst()
-        currentUser!.getPosts(self)
+        currentUser!.displayPosts(display)
     }
     
     public func display(user : User){

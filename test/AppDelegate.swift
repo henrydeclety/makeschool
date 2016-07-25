@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var parseLoginHelper: ParseLoginHelper!
-    var spotifyHelper = SpotifyHelper()
+    
     
     override init() {
         super.init()
@@ -102,6 +102,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = startViewController;
         self.window?.makeKeyAndVisible()
         
+        setUpSpotify()
+        
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
@@ -113,18 +115,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         
-        // Ask SPTAuth if the URL given is a Spotify authentication callback
-        SPTAuth.defaultInstance().canHandleURL(url)
-        SPTAuth.defaultInstance().handleAuthCallbackWithTriggeredAuthURL(url) { (error, session) in
-            if (error != nil){
-                NSLog("*** Auth error: %@", error)
-                return
+        if sourceApplication! == "com.spotify.client" {
+            // Ask SPTAuth if the URL given is a Spotify authentication callback
+            SPTAuth.defaultInstance().canHandleURL(url)
+            SPTAuth.defaultInstance().handleAuthCallbackWithTriggeredAuthURL(url) { (error, session) in
+                if (error != nil){
+                    print(error.localizedDescription)
+                    ErrorHandling.defaultErrorHandler(error)
+                    return
+                } else {
+                    SPTAuth.defaultInstance().session = session
+                    (PFUser.currentUser()! as! User).loggedInSpotify()
+                }
             }
-            self.spotifyHelper.setSession(session)
+            return true
+        } else {
+            return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
         }
-        FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
-        
-        return true
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -146,6 +153,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func setUpSpotify() {
+        let instance = SPTAuth.defaultInstance()
+        instance.clientID = Constants.spotifyClientID
+        instance.redirectURL = NSURL(string: Constants.spotifyRedirectedUrl)
+        instance.requestedScopes = [SPTAuthStreamingScope]
+    }
 
 }
 

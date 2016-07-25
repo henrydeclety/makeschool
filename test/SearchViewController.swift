@@ -10,111 +10,104 @@ import UIKit
 import youtube_ios_player_helper
 
 
-class SearchViewController: UIViewController {
+public class SearchViewController: UIViewController {
     
-    var videosArray : [Dictionary<NSObject, AnyObject>] = []
+    @IBOutlet weak var navigationBar: UINavigationItem!
+    @IBOutlet weak var searchBar: UISearchBar!
+    var tracksArray : [Dictionary<NSObject, AnyObject>] = []
+    var timeLeft : Int!
     var selectedRow : Int?
     var start = 0
     var end = 15
-    @IBOutlet weak var searchField: UITextField!
     @IBOutlet weak var tableView: UITableView!
+    var isYoutube : Bool!
+    var handle : ((SearchViewController, String) -> Void)?
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
+        handle = isYoutube! ? HTTPHelper.handleYTSearch : HTTPHelper.handleSPTSearch
         super.viewDidLoad()
         tableView.delegate = self
-        searchField.delegate = self
         tableView.dataSource = self
-        // Do any additional setup after loading the view, typically from a nib.
+        searchBar.delegate = self
+        searchBar.placeholder = "Enter a song"
+        navigationBar.title = isYoutube! ? "Youtube" : "Spotify"
+        view.backgroundColor = isYoutube! ? UIColor.darkGrayColor() : UIColor.whiteColor()
     }
 
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "displaySelectedVideo" {
-            let playerViewController = segue.destinationViewController as! PlayerViewController
-            playerViewController.videoID = videosArray[tableView.indexPathForSelectedRow!.row]["videoID"] as! String
+    override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let dest = segue.destinationViewController as! PlayerViewController
+        let details = tracksArray[tableView.indexPathForSelectedRow!.row]
+        dest.maxTimeInterval = timeLeft
+        if segue.identifier == "YTSelect" {
+            dest.post = Post(title: details["title"] as! String, videoID: details["videoID"] as! String, thumbnail: details["thumbnail"] as! String)
+        } else if segue.identifier == "SPTSelect" {
+            dest.post = Post(name: details["name"] as! String, artist: details["artist"] as! String, playableURI: details["playableURI"] as! NSURL, duration: details["duration"] as! Int)
         }
     }
     
-    
-}
-
-extension SearchViewController: UITextFieldDelegate {
-    
-    @IBAction func button(sender: UIButton) {
-        textFieldShouldReturn(searchField)
-    }
-    
-    // rajouter une view wait sijamais
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        let targetURL = HTTPHelper.makeNSURLFromStringSearch(textField.text!)
-        
-        HTTPHelper.performGetRequest(targetURL, completion: { (data, HTTPStatusCode, error) -> Void in
-            if HTTPStatusCode == 200 && error == nil {
-                do {
-                    self.videosArray = []
-                    // Convert the JSON data to a dictionary object.
-                    let resultsDict = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! Dictionary<NSObject, AnyObject>
-                    // Get all search result items ("items" array).
-                    let items: Array<Dictionary<NSObject, AnyObject>> = resultsDict["items"] as! Array<Dictionary<NSObject, AnyObject>>
-                    
-                    // Loop through all search results and keep just the necessary data.
-                    for i in 0 ..< items.count {
-                        let snippetDict = items[i]["snippet"] as! Dictionary<NSObject, AnyObject>
-                        // Create a new dictionary to store the video details.
-                        var videoDetailsDict = Dictionary<NSObject, AnyObject>()
-                        videoDetailsDict["title"] = snippetDict["title"]
-                        videoDetailsDict["thumbnail"] = ((snippetDict["thumbnails"] as! Dictionary<NSObject, AnyObject>)["default"] as! Dictionary<NSObject, AnyObject>)["url"]
-                        videoDetailsDict["videoID"] = (items[i]["id"] as! Dictionary<NSObject, AnyObject>)["videoId"]
-                        
-                        // Append the desiredPlaylistItemDataDict dictionary to the videos array.
-                        self.videosArray.append(videoDetailsDict)
-                        
-                        // Reload the tableview.
-                        self.tableView.reloadData()
-                        
-                    }
-                } catch {
-                    print("error with JSON")
-                }
-                
-            } else {
-                print("Error with http")
-            }
-        })
-        return true
-    }
 }
 
 extension SearchViewController : UITableViewDataSource{
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return videosArray.count
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tracksArray.count
     }
     
     // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
     // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
-        let cell = tableView.dequeueReusableCellWithIdentifier("CustomCell") as! CustomCell
-        let videoDetails = videosArray[indexPath.row]
-        cell.title.text = videoDetails["title"] as? String
-        cell.myImageView.image = UIImage(data: NSData(contentsOfURL: NSURL(string: (videoDetails["thumbnail"] as? String)!)!)!)
-        return cell
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+        if isYoutube! {
+            let cell = tableView.dequeueReusableCellWithIdentifier("Youtube") as! YoutubeVideoCell
+            return cell.fill(trackDetails: tracksArray[indexPath.row])
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("Spotify") as! SpotifyTrackCell
+            return cell.fill(trackDetails: tracksArray[indexPath.row])
+        }
     }
-
+    
 }
 
 extension SearchViewController : UITableViewDelegate {
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         cell?.selected = false
     }
 
+
+}
+
+extension SearchViewController : UISearchBarDelegate {
+    
+    public func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        dissmisKeyboard()
+        handle!(self, searchBar.text!)
+    }
+    
+    public func searchBarResultsListButtonClicked(searchBar: UISearchBar) {
+        searchBarSearchButtonClicked(searchBar)
+    }
+    
+    public func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        print("begin")
+    }
+    
+    public func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        print("end")
+    }
+    
+    public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        handle!(self, searchBar.text!)
+    }
+    
+    func dissmisKeyboard() {
+        view.endEditing(true)
+    }
 
 }

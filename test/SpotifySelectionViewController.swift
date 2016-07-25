@@ -10,9 +10,9 @@ import UIKit
 
 class SpotifySelectionViewController: UIViewController {
     
-    var session : SPTSession?
-    var player : SPTAudioStreamingController?
-    
+    override func viewDidLoad() {
+        SpotifyHelper().logIn(self)
+    }
 
     
     

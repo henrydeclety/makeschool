@@ -9,21 +9,44 @@
 import UIKit
 import Parse
 
-class LocationManager : NSObject, CLLocationManagerDelegate {
+class LocationManager : NSObject {
     
     var manager : CLLocationManager?
-    
+        
     func test() {
         manager = CLLocationManager()
         manager?.delegate = self
-        switch CLLocationManager.authorizationStatus() {
-        case .NotDetermined : manager!.requestAlwaysAuthorization()
-        default : break
-        }
+    }
+    
+    func saveLocation() {
+        manager!.requestLocation()
+        manager?.startMonitoringSignificantLocationChanges()
     }
     
 }
 
-//extension LocationManager : CLLocationManagerDelegate {
+extension LocationManager : CLLocationManagerDelegate {
     
-//  }
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        switch status {
+        case .NotDetermined : manager.requestAlwaysAuthorization()
+        case .AuthorizedAlways : saveLocation()
+        default : break
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print("location did fail")
+//        do shit with the error or not
+    }
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("location did update")
+        (PFUser.currentUser() as! User).saveLocations(locations)
+    }
+    
+    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
+        print("location did update to from")
+        (PFUser.currentUser() as! User).saveLocations([oldLocation,newLocation])
+    }
+  }

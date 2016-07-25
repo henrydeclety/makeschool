@@ -11,9 +11,8 @@ import youtube_ios_player_helper
 
 public class Constants {
 
-    public static let NotDetermined : Int32 = 0
-    public static let Restricted : Int32 = 1
-    public static let Denied : Int32 = 2
+    public static let spotifyClientID = "3d7b004f129841b5bc0c8ac4797466d7"
+    public static let spotifyRedirectedUrl = "musicsocializerhd://callback/"
     
     public static let fbGraphRequestParameters : [NSObject : AnyObject]! = ["fields": "id, name, first_name, last_name, email, age_range, gender, birthday, about, bio"]
 
@@ -26,5 +25,4 @@ public class Constants {
         ytParams.setObject("http://www.youtube.com", forKey: "origin")
         return ytParams
     }
-    
 }

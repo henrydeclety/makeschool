@@ -7,26 +7,26 @@
 //
 
 import Foundation
+import Parse
 
-public class SpotifyHelper {
+public class SpotifyHelper  : UIViewController{
     
-    var player : SPTAudioStreamingController?
-    var session : SPTSession?
+    static var player : SPTAudioStreamingController = SPTAudioStreamingController.sharedInstance()
+    var logInViewController : SPTAuthViewController?
+    var currentSender : UIViewController?
     
-    public func playUsingSession(session : SPTSession, trackId : String){
-        if (player == nil){
-            player = SPTAudioStreamingController.sharedInstance()
+    static public func play(track : NSURL){
+        if !player.loggedIn {
+            do {
+                try player.startWithClientId(SPTAuth.defaultInstance().clientID)
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            SPTAudioStreamingController.sharedInstance().loginWithAccessToken(SPTAuth.defaultInstance().session.accessToken)
         }
         
-        do {
-            try player!.startWithClientId(SPTAuth.defaultInstance().clientID)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        player?.loginWithAccessToken(session.accessToken)
-        
-        let trackURI : NSURL = NSURL(string: "spotify:track:58s6EuEYJdlb0kO7awm3Vp")!
-        player?.playURIs([trackURI], fromIndex: 0, callback: { (error) in
+//        let trackURI : NSURL = NSURL(string: "spotify:track:58s6EuEYJdlb0kO7awm3Vp")!
+        player.playURIs([track], fromIndex: 0, callback: { (error) in
             if (error != nil){
                 NSLog("*** Auth error: %@", error)
                 return
@@ -34,22 +34,53 @@ public class SpotifyHelper {
         })
     }
     
-    public func launchLogIn(application : UIApplication) {
-        let instance = SPTAuth.defaultInstance()
-        instance.clientID = "3d7b004f129841b5bc0c8ac4797466d7"
-        instance.redirectURL = NSURL(string: "musicsocializerhd://callback/")
-        instance.requestedScopes = [SPTAuthStreamingScope]
-        
-        // Construct a login URL and open it
-        let loginURL : NSURL = instance.loginURL
-        
-        // Opening a URL in Safari close to application launch may trigger
-        // an iOS bug, so we wait a bit before doing so.
-        UIApplication.sharedApplication().performSelector(#selector(UIApplication.openURL(_:)), withObject: loginURL, afterDelay: 0.1)
+    static public func pause() {
+        player.setIsPlaying(false,callback : nil)
     }
     
-    public func setSession(session : SPTSession) {
-        self.session = session
-        playUsingSession(session, trackId: "")
+    static public func play() {
+        player.setIsPlaying(true, callback: nil)
+    }
+    
+    public static func loggedIn() -> Bool{
+        return (PFUser.currentUser() as! User).isSpotifyUser()
+//        return player.loggedIn
+    }
+    
+    public static func isPlaying() -> Bool {
+        return player.currentTrackURI != nil
+    }
+    
+    public func logIn(sender : UIViewController) {
+        logInViewController = SPTAuthViewController.authenticationViewController()
+        logInViewController?.delegate = self
+        // Construct a login URL and open it
+        let loginURL : NSURL = SPTAuth.defaultInstance().loginURL
+        // Opening a URL in Safari close to application launch may trigger
+        // an iOS bug, so we wait a bit before doing so.
+//        if UIApplication.sharedApplication().canOpenURL(NSURL(string : "spotify-action://")!){
+                UIApplication.sharedApplication().performSelector(#selector(UIApplication.openURL(_:)), withObject: loginURL, afterDelay: 0.1)
+//        } else {
+//            sender.presentViewController(logInViewController!, animated: false, completion: nil)
+//        }
+    }
+    
+    
+    
+}
+
+extension SpotifyHelper : SPTAuthViewDelegate {
+    public func authenticationViewController(authenticationViewController: SPTAuthViewController!, didLoginWithSession session: SPTSession!) {
+
+    }
+    
+     public func authenticationViewControllerDidCancelLogin(authenticationViewController: SPTAuthViewController!) {
+        
+        
+    }
+    
+     public func authenticationViewController(authenticationViewController: SPTAuthViewController!, didFailToLogin error: NSError!) {
+        
+        
     }
 }

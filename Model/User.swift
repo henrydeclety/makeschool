@@ -20,10 +20,15 @@ public class User : PFUser {
     public var firstName : String?
     public var lastName : String?
     public var about : String?
+    public var isLoggedInSpoti : Bool?
     
     static func findUsersQuery() -> PFQuery {
-        let userquery = PFUser.query()
+        let userquery = PFUser.query()?.whereKey("objectId", notEqualTo: current().objectId!)
         return userquery!
+    }
+    
+    public static func current() -> User {
+        return PFUser.currentUser() as! User
     }
     
     func age() -> Int? {
@@ -40,6 +45,18 @@ public class User : PFUser {
         return nil
     }
     
+    func saveLocations(locations : [CLLocation]) {
+        let current = PFUser.currentUser()
+        for location in locations {
+            current!["location"] = PFGeoPoint(location: location)
+            current!.saveInBackgroundWithBlock({ (success, error) in
+                if !success {
+                    print("Error while saving location")
+                }
+            })
+        }
+    }
+    
     func getFbProfilePicURL() -> String? {
         if let id = fbID {
             return "http://graph.facebook.com/\(id)/picture?type=large"
@@ -48,31 +65,32 @@ public class User : PFUser {
         }
     }
     
-    func getPosts(sender : HomeViewController) {
-            findLinksQuery().findObjectsInBackgroundWithBlock({ (results :[PFObject]?, error : NSError?) in
+    func loggedInSpotify() {
+        isLoggedInSpoti = true
+    }
+    
+    func isSpotifyUser() -> Bool {
+        if let bool = isLoggedInSpoti {
+            return bool
+        } else {
+            return false
+        }
+    }
+    
+    func displayPosts(display : User -> Void) {
+            Post.query(self).findObjectsInBackgroundWithBlock({ (results :[PFObject]?, error : NSError?) in
                 guard error == nil else {
                     print("Error while fetching posts from Parse")
                     return
                 }
                 self.posts = results as? [Post] ?? []
                 if (!(self.posts?.isEmpty)!) {
-                    sender.display(self)
+                    display(self)
                 }
             })
     }
     
-    func findLinksQuery() -> PFQuery {
-        let linksquery = PFQuery(className: "Post")
-        linksquery.whereKeyExists("videoID")
-        linksquery.whereKey("user", equalTo: self)
-        return linksquery
-    }
-    
-    func isSpotifyUser() -> Bool {
-        return true
-    }
-    
-    public override func saveInBackgroundWithBlock(block: PFBooleanResultBlock?) {
+    public func saveToParse(block: PFBooleanResultBlock?) {
         self["fbID"] = fbID!
         self["sex"] = sex!
         self["firstName"] = firstName!
