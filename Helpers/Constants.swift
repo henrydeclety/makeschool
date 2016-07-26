@@ -14,6 +14,8 @@ public class Constants {
     public static let spotifyClientID = "3d7b004f129841b5bc0c8ac4797466d7"
     public static let spotifyRedirectedUrl = "musicsocializerhd://callback/"
     
+    public static let thresholdToReloadUsers = 2
+    
     public static let fbGraphRequestParameters : [NSObject : AnyObject]! = ["fields": "id, name, first_name, last_name, email, age_range, gender, birthday, about, bio"]
 
     

@@ -6,8 +6,9 @@
 //  Copyright © 2016 Henry Declety. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Parse
+import Bond
 
 public class SpotifyHelper  : UIViewController{
     
@@ -22,9 +23,8 @@ public class SpotifyHelper  : UIViewController{
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
-            SPTAudioStreamingController.sharedInstance().loginWithAccessToken(SPTAuth.defaultInstance().session.accessToken)
         }
-        
+        SPTAudioStreamingController.sharedInstance().loginWithAccessToken(SPTAuth.defaultInstance().session.accessToken)
 //        let trackURI : NSURL = NSURL(string: "spotify:track:58s6EuEYJdlb0kO7awm3Vp")!
         player.playURIs([track], fromIndex: 0, callback: { (error) in
             if (error != nil){
@@ -43,12 +43,15 @@ public class SpotifyHelper  : UIViewController{
     }
     
     public static func loggedIn() -> Bool{
-        return (PFUser.currentUser() as! User).isSpotifyUser()
-//        return player.loggedIn
+        return SPTAuth.defaultInstance().session != nil
+    }
+    
+    public static func isSet() -> Bool {
+        return player.currentTrackURI != nil
     }
     
     public static func isPlaying() -> Bool {
-        return player.currentTrackURI != nil
+        return player.isPlaying
     }
     
     public func logIn(sender : UIViewController) {
@@ -65,7 +68,17 @@ public class SpotifyHelper  : UIViewController{
 //        }
     }
     
+    public static func currentTime() -> String {
+        return player.currentPlaybackPosition.description
+    }
     
+    public static func stop() {
+        do {
+            try player.stop()
+        } catch {
+            print("Error while stopping the video")
+        }
+    }
     
 }
 

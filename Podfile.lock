@@ -5,6 +5,7 @@ PODS:
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
+  - Bond (4.0.0)
   - ConvenienceKit (0.4.0)
   - FBSDKCoreKit (4.14.0):
     - Bolts (~> 1.7)
@@ -24,6 +25,7 @@ PODS:
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
+  - Bond (= 4.0.0)
   - ConvenienceKit
   - Parse
   - ParseFacebookUtilsV4
@@ -32,6 +34,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  Bond: b729cdb22552def86efd4adfd8b8d93061eb4649
   ConvenienceKit: ba1ad8797897dc0d011676e961a2f3e9b270c841
   FBSDKCoreKit: 6e020b5db0b5bd1e01f5fb0902131befd129a502
   FBSDKLoginKit: da563567a108050ef83739c8c8c001ee9e25fa13
@@ -40,6 +43,6 @@ SPEC CHECKSUMS:
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: d82f0cbad737cf97e78ad922a73b618a234120ba
+PODFILE CHECKSUM: 387f573ef252bbe61bff38d1b647be75cbfa42b0
 
 COCOAPODS: 1.0.1

@@ -14,14 +14,15 @@ public class SearchViewController: UIViewController {
     
     @IBOutlet weak var navigationBar: UINavigationItem!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableView: UITableView!
     var tracksArray : [Dictionary<NSObject, AnyObject>] = []
     var timeLeft : Int!
     var selectedRow : Int?
     var start = 0
     var end = 15
-    @IBOutlet weak var tableView: UITableView!
     var isYoutube : Bool!
     var handle : ((SearchViewController, String) -> Void)?
+    var isHandling = false
 
     override public func viewDidLoad() {
         handle = isYoutube! ? HTTPHelper.handleYTSearch : HTTPHelper.handleSPTSearch
@@ -47,6 +48,12 @@ public class SearchViewController: UIViewController {
             dest.post = Post(title: details["title"] as! String, videoID: details["videoID"] as! String, thumbnail: details["thumbnail"] as! String)
         } else if segue.identifier == "SPTSelect" {
             dest.post = Post(name: details["name"] as! String, artist: details["artist"] as! String, playableURI: details["playableURI"] as! NSURL, duration: details["duration"] as! Int)
+        }
+    }
+    
+    @IBAction public func stopPlaying(segue: UIStoryboardSegue) {
+        if !isYoutube! {
+            SpotifyHelper.stop()
         }
     }
     
@@ -76,11 +83,12 @@ extension SearchViewController : UITableViewDataSource{
 extension SearchViewController : UITableViewDelegate {
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
-        cell?.selected = false
+        if (!isHandling){
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            cell?.selected = false
+            performSegueWithIdentifier(isYoutube! ? "YTSelect" : "SPTSelect", sender: self)
+        }
     }
-
-
 }
 
 extension SearchViewController : UISearchBarDelegate {
@@ -101,9 +109,11 @@ extension SearchViewController : UISearchBarDelegate {
     public func searchBarTextDidEndEditing(searchBar: UISearchBar) {
         print("end")
     }
-    
+        
     public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        isHandling = true
         handle!(self, searchBar.text!)
+        isHandling = false
     }
     
     func dissmisKeyboard() {

@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Bond.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>ConvenienceKit-ConvenienceKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -67,7 +72,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>074B4D60E559AE8F2197D72428CEC6AA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>0EB19C1377A747F81110D44E2D5FCF78</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>11A09A967C036AE6CFECDFEA8325FE93</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>22FA30C4D93DD5F8324D342AF8A5FE42</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -87,22 +107,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>72AB81871F06E5F905A4F209407890A5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>802D3B1C197FEA0861F5931F7ED43355</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>8978C7FB7007A28B676AB1EA004C3923</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9381358A68D387A132E4B308034210C4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

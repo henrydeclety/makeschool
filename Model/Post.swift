@@ -8,6 +8,7 @@
 
 import Foundation
 import Parse
+import youtube_ios_player_helper
 
 
 public class Post : PFObject, PFSubclassing {
@@ -32,6 +33,30 @@ public class Post : PFObject, PFSubclassing {
         super.init()
     }
     
+    public func isYoutube() -> Bool {
+        if let bool = isyoutube {
+            return bool
+        } else {
+            isyoutube = self["isYoutube"] as! Bool
+            return isyoutube
+        }
+    }
+    
+    public func playInHome(sender : HomeViewController, first : Bool) {
+        if isYoutube() {
+            let dico = Constants.ytParams()
+            dico.setObject(self["start"]! as! Float, forKey: "start")
+            dico.setObject(self["end"]! as! Float, forKey: "end")
+            if (first){
+                sender.playerView.loadWithVideoId(self["videoID"] as! String, playerVars: dico as [NSObject : AnyObject])
+            } else {
+                sender.playerView.cueVideoById(self["videoID"] as! String, startSeconds: self["start"]! as! Float, endSeconds: self["end"]! as! Float, suggestedQuality: YTPlaybackQuality.Auto)
+            }
+        } else {
+//            self.play(NSURL(string: self["playableURI"] as! String)!, self["start"]! as! Float)
+        }
+    }
+    
     public init(name : String, artist : String, playableURI : NSURL, duration : Int) {
         super.init()
         self.name = name
@@ -39,10 +64,6 @@ public class Post : PFObject, PFSubclassing {
         isyoutube = false
         self.playableURI = playableURI
         self.totalDuration = duration
-    }
-    
-    func isYoutube() -> Bool {
-        return isyoutube ?? (self["isYoutube"] as! Bool)
     }
     
     public static func parseClassName() -> String {
@@ -79,8 +100,5 @@ public class Post : PFObject, PFSubclassing {
         }
         
     }
-    
-    
-    
     
 }

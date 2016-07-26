@@ -9,48 +9,61 @@
 import UIKit
 import Parse
 
-class ProfileViewController: UIViewController {
+public class ProfileViewController: UIViewController {
     
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var loginLabel: UILabel!
-    var tracks : [Post] = []
-    let maxTimeAllowed = 60
+    let maxTimeAllowed = 90
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var time: UILabel!
+    public var tracks : [Post] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         tableView.dataSource = self
         tableView.delegate = self
         reloadTracks()
-        updateLogin()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        reloadTracks()
+//    static public func defaultInstance() -> UIViewController {
+//        return self
+//    }
+    
+    override public func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+//        reloadTracks()
     }
     
     func display(user : User){
         tracks = user.posts!
         time.text = "Time left : " + String(timeLeft()) + "s"
-        tableView.reloadData()
     }
     
     func timeLeft() -> Int {
-        return 60 - tracks.map { (post) -> Int in post["duration"] as! Int }.reduce(0) { (a, b) -> Int in a+b }
+        return maxTimeAllowed - tracks.map { (post) -> Int in post["duration"] as! Int }.reduce(0) { (a, b) -> Int in a+b }
     }
     
     func reloadTracks() {
         User.current().displayPosts(display)
+        updateLogin()
     }
     
     @IBAction func spotifyLogIn(sender: AnyObject) {
         SpotifyHelper().logIn(self)
     }
     
+    @IBOutlet weak var labelWidthConstaint: NSLayoutConstraint!
+    
     func updateLogin() {
         if SpotifyHelper.loggedIn() {
             loginLabel.text = "Logged in Spotify"
             loginButton.hidden = true
+        } else {
+            loginLabel.text = "Spotify premium user ?"
+            loginButton.hidden = false
         }
     }
     
@@ -83,25 +96,24 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let dest = segue.destinationViewController as! SearchViewController
         dest.isYoutube = segue.identifier == "YTSearch"
         dest.timeLeft = timeLeft()
     }
     
     @IBAction func unwind(segue: UIStoryboardSegue) {
-        (segue.sourceViewController as? PlayerViewController)!.save()
-        reloadTracks()
+        tracks.append((segue.sourceViewController as! PlayerViewController).post!)
     }
 }
 
 extension ProfileViewController : UITableViewDataSource {
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tracks.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let post = tracks[indexPath.row]
         if post.isYoutube() {
             let cell = tableView.dequeueReusableCellWithIdentifier("Youtube") as! YoutubeVideoCell
@@ -116,22 +128,33 @@ extension ProfileViewController : UITableViewDataSource {
 
 extension ProfileViewController : UITableViewDelegate {
     
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    public func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+    public func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         return .Delete
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            tracks[indexPath.row].deleteInBackground()
-            reloadTracks()
+//            tracks[indexPath.row] = nil
+            
+            tracks.removeAtIndex(indexPath.row).deleteInBackground()
+            
+//            tableView.reloadData()
+            
+//            tracks[indexPath.row].deleteInBackgroundWithBlock({ (result, error) in
+//                if error != nil {
+//                    print("Error while deleting")
+//                } else {
+//                    reloadTracks()
+//                }
+//            })
         }
     }
     
-    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath){
+    public func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath){
         
     }
     

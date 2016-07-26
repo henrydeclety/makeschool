@@ -6,6 +6,7 @@ target 'myApp' do
   use_frameworks!
 
   pod "youtube-ios-player-helper", "~> 0.1.4"
+  pod 'Bond', '4.0.0'
   pod 'Parse'
   pod 'ParseFacebookUtilsV4'
   pod 'ParseUI'

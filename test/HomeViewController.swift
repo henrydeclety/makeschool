@@ -12,6 +12,8 @@ import youtube_ios_player_helper
 
 public class HomeViewController: UIViewController {
 
+    @IBOutlet weak var sptNext: UIButton!
+    @IBOutlet weak var sptPlayPause: UIButton!
     @IBOutlet weak var waitingView: UIActivityIndicatorView!
     @IBOutlet weak var descriptionView: UILabel!
     @IBOutlet weak var sex: UILabel!
@@ -25,7 +27,6 @@ public class HomeViewController: UIViewController {
     
     //cte
     let ended = 1
-    let thresholdToReloadUsers = 2
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -49,10 +50,14 @@ public class HomeViewController: UIViewController {
     
     func nextPost(sender: AnyObject) {
         if (!currentPosts.isEmpty){
-            playPost(currentPosts.removeFirst(), first: false)
+            currentPosts.removeFirst().playInHome(self, first: false)
         } else {
             print("done")
         }
+    }
+    
+    func playPauseSPT(url : NSURL, start : Int, end : Int){
+//        if sptPlayPause.currentImage.
     }
     
     func reloadNextUsers() {
@@ -72,37 +77,25 @@ public class HomeViewController: UIViewController {
     }
     
     func consumeUser(){
-        if(nextUsers.count < thresholdToReloadUsers){
+        if(nextUsers.count < Constants.thresholdToReloadUsers){
             reloadNextUsers()
         }
-        currentUser = nextUsers.removeFirst()
-        currentUser!.displayPosts(display)
+        if nextUsers.isEmpty {
+//
+        } else {
+            currentUser = nextUsers.removeFirst()
+            currentUser!.displayPosts(display)
+        }
     }
     
     public func display(user : User){
         currentPosts = user.posts!
-        
-        //feeling in display info
         descriptionView.text = user["description"] as? String ?? ""
-        
         age.text = String(user["age"] as! Int)
         sex.text = user["sex"] as! Bool ? "Man" :  "Woman"
         waitingView.hidden = true
-        playPost(currentPosts.removeFirst(), first: true)
-        
+        currentPosts.removeFirst().playInHome(self, first: true)
     }
-    
-    public func playPost(post : Post, first : Bool){
-        let dico = Constants.ytParams()
-        dico.setObject(post["start"]! as! Float, forKey: "start")
-        dico.setObject(post["end"]! as! Float, forKey: "end")
-        if (first){
-            playerView.loadWithVideoId(post["videoID"] as! String, playerVars: dico as [NSObject : AnyObject])
-        } else {
-            playerView.cueVideoById(post["videoID"] as! String, startSeconds: post["start"]! as! Float, endSeconds: post["end"]! as! Float, suggestedQuality: YTPlaybackQuality.Auto)
-        }
-    }
-    
 }
 
 extension HomeViewController : YTPlayerViewDelegate {

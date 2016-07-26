@@ -50,7 +50,7 @@ public class HTTPHelper {
     }
     
     public static func handleSPTSearch(sender : SearchViewController, text : String) {
-        sender.tracksArray = []
+        var tmp : [Dictionary<NSObject, AnyObject>] = []
         SPTSearch.performSearchWithQuery(text, queryType: SPTSearchQueryType.QueryTypeTrack, accessToken: SPTAuth.defaultInstance().session.accessToken) { (error, result) in
             guard error == nil else {
                 ErrorHandling.defaultErrorHandler(error)
@@ -64,8 +64,9 @@ public class HTTPHelper {
                     trackDetailsDict["artist"] = (track.artists[0] as? SPTPartialArtist)!.name
                     trackDetailsDict["playableURI"] = track.playableUri
                     trackDetailsDict["duration"] = track.duration
-                    sender.tracksArray.append(trackDetailsDict)
+                    tmp.append(trackDetailsDict)
                 }
+                sender.tracksArray = tmp
                 sender.tableView.reloadData()
             }
         }

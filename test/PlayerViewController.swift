@@ -10,12 +10,16 @@ import UIKit
 import youtube_ios_player_helper
 import Darwin
 import Parse
+import Bond
 
 
 public class PlayerViewController: UIViewController {
     
+    @IBOutlet weak var playPauseSPT: UIButton!
     var post : Post!
     var maxTimeInterval : Int!
+    @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var totalDuration: UILabel!
     @IBOutlet weak var nameSPT: UILabel!
     @IBOutlet weak var artistSPT: UILabel!
     @IBOutlet weak var timeSTP: UILabel!
@@ -24,15 +28,26 @@ public class PlayerViewController: UIViewController {
     @IBOutlet weak var waitingView: UIActivityIndicatorView!
     @IBOutlet weak var ytPlayerView: YTPlayerView!
     @IBOutlet weak var sptPlayerView: UIView!
-    
+    var timer : NSTimer?
+
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        SpotifyHelper.player.addObserver(self, forKeyPath: "currentPlaybackPosition", options: NSKeyValueObservingOptions.New, context: nil)
         setDelegates()
         if post.isYoutube() {
             setAsYT()
         } else {
             setAsSPT()
+        }
+    }
+    
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if keyPath == "currentPlaybackPosition" {
+            let time = Double((object as! SPTAudioStreamingController).currentPlaybackPosition)
+            let optionalZero = seconds(time) < 10 ? "0" : ""
+            timeSTP.text = String(minutes(time)) + ":" + optionalZero + String(seconds(time))
+            progressBar.setProgress(Float(time/duration()), animated: true)
         }
     }
     
@@ -44,6 +59,7 @@ public class PlayerViewController: UIViewController {
     }
     
     func setAsSPT() {
+        totalDuration.text = String(minutes()) + ":" + String(seconds())
         nameSPT.text = post.name
         artistSPT.text = post.artist
         waitingView.hidden = true
@@ -55,10 +71,6 @@ public class PlayerViewController: UIViewController {
         end.delegate = self
         start.dataSource = self
         end.dataSource = self
-    }
-    
-    func minutes() -> Int {
-        return duration()/60
     }
     
     func waitingForInfo() {
@@ -74,18 +86,30 @@ public class PlayerViewController: UIViewController {
         end.hidden = false
     }
     
-    func duration() -> Int {
+    func duration() -> Double {
         if let total = post.totalDuration {
-            return total
+            return Double(total)
         } else {
             let test = Int(ytPlayerView.duration())
             post.totalDuration = test != 0 ? test : nil
-            return test
+            return Double(test)
         }
     }
     
+    func minutes(from : Double) -> Int {
+        return Int(from)/60
+    }
+    
+    func seconds(from : Double) -> Int {
+        return Int(from) - minutes(from) * 60
+    }
+    
+    func minutes() -> Int {
+        return minutes(duration())
+    }
+    
     func seconds() -> Int {
-        return duration() - minutes() * 60
+        return seconds(duration())
     }
     
     func extractDuration() -> Int {
@@ -95,25 +119,29 @@ public class PlayerViewController: UIViewController {
             return 60 - start.seconds() + end.seconds()
         }
     }
-    @IBAction func playSPT(sender: AnyObject) {
-        if !SpotifyHelper.isPlaying() {
+    
+    @IBAction func pauseSPT(sender: AnyObject) {
+        if !SpotifyHelper.isSet() {
             SpotifyHelper.play(post.playableURI!)
+            playPauseSPT.setImage(UIImage(named: "Pause.png"), forState: UIControlState.Normal)
         } else {
-            SpotifyHelper.play()
+            if SpotifyHelper.isPlaying() {
+                playPauseSPT.setImage(UIImage(named: "Play.png"), forState: UIControlState.Normal)
+                SpotifyHelper.pause()
+            } else {
+                playPauseSPT.setImage(UIImage(named: "Pause.png"), forState: UIControlState.Normal)
+                SpotifyHelper.play()
+            }
         }
     }
     
-    @IBAction func pauseSPT(sender: AnyObject) {
-        SpotifyHelper.pause()
-    }
-    
-    @IBAction func back(sender: AnyObject) {
-        pauseSPT(sender)
-    }
-  
-    public func save() {
-        pauseSPT(self)
-        post.save(start: start.totalInSec(), end: extractDuration() + start.totalInSec(), duration: extractDuration())
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if post.isYoutube() {
+            SpotifyHelper.stop()
+        }
+        if segue.identifier == "Save" {
+            post.save(start: start.totalInSec(), end: extractDuration() + start.totalInSec(), duration: extractDuration())
+        }
     }
 }
 
