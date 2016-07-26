@@ -20,6 +20,7 @@
 		66DB4A991D429BDA00C92A4E /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB4A981D429BDA00C92A4E /* Spotify.framework */; };
 		66DB4A9B1D42A63900C92A4E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB4A9A1D42A63900C92A4E /* AVFoundation.framework */; };
 		66DB4A9D1D42A64900C92A4E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB4A9C1D42A64900C92A4E /* SystemConfiguration.framework */; };
+		66DC8C2E1D47152400A606AD /* SpotifyPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DC8C2D1D47152400A606AD /* SpotifyPlayerView.swift */; };
 		66E0802E1D400BF5001888EF /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E0802D1D400BF5001888EF /* MatchesViewController.swift */; };
 		66E080311D400F7F001888EF /* MatchesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E080301D400F7F001888EF /* MatchesCell.swift */; };
 		66F312D71D4586C1004318A7 /* YoutubeVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F312D61D4586C1004318A7 /* YoutubeVideoCell.swift */; };
@@ -36,7 +37,7 @@
 		BA59736D1D36B24B00201D2F /* testTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA59736C1D36B24B00201D2F /* testTests.swift */; };
 		BA5973781D36B24B00201D2F /* testUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5973771D36B24B00201D2F /* testUITests.swift */; };
 		BA59738A1D36E38900201D2F /* HTTPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5973891D36E38900201D2F /* HTTPHelper.swift */; };
-		BADE5C451D384D0500827542 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADE5C441D384D0500827542 /* PlayerViewController.swift */; };
+		BADE5C451D384D0500827542 /* SelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADE5C441D384D0500827542 /* SelectViewController.swift */; };
 		BADE5CD31D3875A800827542 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BADE5CD21D3875A800827542 /* Main.storyboard */; };
 		DFA9F72352D0C707FD2FE827 /* Pods_myApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8280107B0C67103174ED5EF /* Pods_myApp.framework */; };
 /* End PBXBuildFile section */
@@ -74,6 +75,7 @@
 		66DB4A981D429BDA00C92A4E /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		66DB4A9A1D42A63900C92A4E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		66DB4A9C1D42A64900C92A4E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		66DC8C2D1D47152400A606AD /* SpotifyPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyPlayerView.swift; sourceTree = "<group>"; };
 		66E0802D1D400BF5001888EF /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
 		66E080301D400F7F001888EF /* MatchesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesCell.swift; sourceTree = "<group>"; };
 		66F312D61D4586C1004318A7 /* YoutubeVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeVideoCell.swift; sourceTree = "<group>"; };
@@ -99,7 +101,7 @@
 		BA5973771D36B24B00201D2F /* testUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testUITests.swift; sourceTree = "<group>"; };
 		BA5973791D36B24B00201D2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA5973891D36E38900201D2F /* HTTPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPHelper.swift; sourceTree = "<group>"; };
-		BADE5C441D384D0500827542 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		BADE5C441D384D0500827542 /* SelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectViewController.swift; sourceTree = "<group>"; };
 		BADE5CB01D38553500827542 /* myApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "myApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		BADE5CD21D3875A800827542 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E8280107B0C67103174ED5EF /* Pods_myApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_myApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +172,7 @@
 				667B59251D4461BF0005A38A /* SpotifyTrackCell.swift */,
 				BA3B8E2A1D395750004D8563 /* TimePickerView.swift */,
 				66E080301D400F7F001888EF /* MatchesCell.swift */,
+				66DC8C2D1D47152400A606AD /* SpotifyPlayerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -218,7 +221,7 @@
 				BADE5CD21D3875A800827542 /* Main.storyboard */,
 				BA5973601D36B24B00201D2F /* LaunchScreen.storyboard */,
 				BA5973631D36B24B00201D2F /* Info.plist */,
-				BADE5C441D384D0500827542 /* PlayerViewController.swift */,
+				BADE5C441D384D0500827542 /* SelectViewController.swift */,
 				BADE5CB01D38553500827542 /* myApp-Bridging-Header.h */,
 				BA49F3181D3D5D6200D53474 /* HomeViewController.swift */,
 				66E0802D1D400BF5001888EF /* MatchesViewController.swift */,
@@ -527,6 +530,7 @@
 				66F312D71D4586C1004318A7 /* YoutubeVideoCell.swift in Sources */,
 				BA59735A1D36B24B00201D2F /* SearchViewController.swift in Sources */,
 				BA59738A1D36E38900201D2F /* HTTPHelper.swift in Sources */,
+				66DC8C2E1D47152400A606AD /* SpotifyPlayerView.swift in Sources */,
 				665FB5AA1D42DDFB0093AEEE /* SpotifyHelper.swift in Sources */,
 				660196321D3F4A08001B1EF8 /* Like.swift in Sources */,
 				66E0802E1D400BF5001888EF /* MatchesViewController.swift in Sources */,
@@ -543,7 +547,7 @@
 				66E080311D400F7F001888EF /* MatchesCell.swift in Sources */,
 				BA49F3191D3D5D6200D53474 /* HomeViewController.swift in Sources */,
 				667B59261D4461BF0005A38A /* SpotifyTrackCell.swift in Sources */,
-				BADE5C451D384D0500827542 /* PlayerViewController.swift in Sources */,
+				BADE5C451D384D0500827542 /* SelectViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -27,4 +27,11 @@ public class Constants {
         ytParams.setObject("http://www.youtube.com", forKey: "origin")
         return ytParams
     }
+    
+    public static func noMoreUsersAlert() -> UIAlertController {
+        let controller = UIAlertController(title: nil, message: "No more users available", preferredStyle: .Alert)
+        let button = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        controller.addAction(button)
+        return controller
+    }
 }

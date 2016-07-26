@@ -15,7 +15,6 @@ import Bond
 
 public class PlayerViewController: UIViewController {
     
-    @IBOutlet weak var playPauseSPT: UIButton!
     var post : Post!
     var maxTimeInterval : Int!
     @IBOutlet weak var progressBar: UIProgressView!
@@ -33,13 +32,20 @@ public class PlayerViewController: UIViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        SpotifyHelper.player.addObserver(self, forKeyPath: "currentPlaybackPosition", options: NSKeyValueObservingOptions.New, context: nil)
+        SpotifyHelper.addObserver(self)
         setDelegates()
         if post.isYoutube() {
             setAsYT()
         } else {
             setAsSPT()
         }
+    }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        if post.isYoutube() {
+            SpotifyHelper.stop()
+        }
+        super.viewWillDisappear(animated)
     }
     
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
@@ -120,31 +126,15 @@ public class PlayerViewController: UIViewController {
         }
     }
     
-    @IBAction func pauseSPT(sender: AnyObject) {
-        if !SpotifyHelper.isSet() {
-            SpotifyHelper.play(post.playableURI!)
-            playPauseSPT.setImage(UIImage(named: "Pause.png"), forState: UIControlState.Normal)
-        } else {
-            if SpotifyHelper.isPlaying() {
-                playPauseSPT.setImage(UIImage(named: "Play.png"), forState: UIControlState.Normal)
-                SpotifyHelper.pause()
-            } else {
-                playPauseSPT.setImage(UIImage(named: "Pause.png"), forState: UIControlState.Normal)
-                SpotifyHelper.play()
-            }
-        }
-    }
+    
+    
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if post.isYoutube() {
-            SpotifyHelper.stop()
-        }
         if segue.identifier == "Save" {
             post.save(start: start.totalInSec(), end: extractDuration() + start.totalInSec(), duration: extractDuration())
         }
     }
 }
-
 
 extension PlayerViewController : UIPickerViewDataSource {
 

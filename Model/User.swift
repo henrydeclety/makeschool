@@ -77,19 +77,36 @@ public class User : PFUser {
         }
     }
     
-    func displayPosts(display : User -> Void) {
-            Post.query(self).findObjectsInBackgroundWithBlock({ (results :[PFObject]?, error : NSError?) in
-                guard error == nil else {
-                    print("Error while fetching posts from Parse")
+//    func displayPosts(display : User -> Void) {
+        func displayPosts(sender : UIViewController) {
+
+        Post.query(self).findObjectsInBackgroundWithBlock({ (results :[PFObject]?, error : NSError?) in
+            guard error == nil else {
+                print("Error while fetching posts from Parse")
+                return
+            }
+            self.posts = results as? [Post] ?? []
+            
+            if let home = sender as? HomeViewController {
+            for post in self.posts! {
+                if !post.isYoutube() && !SpotifyHelper.loggedIn() {
+                    home.currentUser = nil
+                    home.consumeUser()
+                    print("Spotify user dissmissed")
                     return
                 }
-                self.posts = results as? [Post] ?? []
-                if (!(self.posts?.isEmpty)!) {
-                    display(self)
+            }
+            }
+            if (!(self.posts?.isEmpty)!) {
+                if let homeTest = sender as? HomeViewController {
+                    homeTest.display(self)
+                } else {
+                    (sender as! ProfileViewController).display(self)
                 }
-            })
+            }
+        })
     }
-    
+
     public func saveToParse(block: PFBooleanResultBlock?) {
         self["fbID"] = fbID!
         self["sex"] = sex!

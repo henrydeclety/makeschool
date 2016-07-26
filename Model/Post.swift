@@ -20,6 +20,8 @@ public class Post : PFObject, PFSubclassing {
     var isyoutube: Bool!
     var totalDuration : Int?
     var playableURI : NSURL?
+    var start : Int?
+    var end : Int?
     
     public init(title : String, videoID : String, thumbnail : String) {
         super.init()
@@ -42,18 +44,37 @@ public class Post : PFObject, PFSubclassing {
         }
     }
     
+    public func load() {
+        start = self["start"]! as? Int
+        end = self["end"]! as? Int
+        if isYoutube() {
+            videoID = self["videoID"] as? String
+        } else {
+            playableURI = NSURL(string : (self["playableURI"] as? String)!)
+            name = self["name"] as? String
+            artist = self["artist"] as? String
+        }
+    }
+    
     public func playInHome(sender : HomeViewController, first : Bool) {
+        load()
         if isYoutube() {
             let dico = Constants.ytParams()
-            dico.setObject(self["start"]! as! Float, forKey: "start")
-            dico.setObject(self["end"]! as! Float, forKey: "end")
+            dico.setObject(Float(start!), forKey: "start")
+            dico.setObject(Float(end!), forKey: "end")
             if (first){
-                sender.playerView.loadWithVideoId(self["videoID"] as! String, playerVars: dico as [NSObject : AnyObject])
+                sender.ytPlayerView.loadWithVideoId(videoID!, playerVars: dico as [NSObject : AnyObject])
             } else {
-                sender.playerView.cueVideoById(self["videoID"] as! String, startSeconds: self["start"]! as! Float, endSeconds: self["end"]! as! Float, suggestedQuality: YTPlaybackQuality.Auto)
+                sender.ytPlayerView.cueVideoById(videoID!, startSeconds: Float(start!), endSeconds: Float(end!), suggestedQuality: YTPlaybackQuality.Auto)
             }
         } else {
-//            self.play(NSURL(string: self["playableURI"] as! String)!, self["start"]! as! Float)
+            sender.sptName.text = name
+            sender.sptArtist.text = artist
+            if (SpotifyHelper.isPlaying()){
+            SpotifyHelper.pause()
+            }
+            SpotifyHelper.play(playableURI!, from: start!)
+            sender.currentLifetime = end
         }
     }
     

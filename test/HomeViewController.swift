@@ -12,15 +12,21 @@ import youtube_ios_player_helper
 
 public class HomeViewController: UIViewController {
 
+    
+    @IBOutlet weak var sptPlayerView: SpotifyPlayerView!
+    @IBOutlet weak var sptName: UILabel!
+    @IBOutlet weak var sptArtist: UILabel!
     @IBOutlet weak var sptNext: UIButton!
     @IBOutlet weak var sptPlayPause: UIButton!
     @IBOutlet weak var waitingView: UIActivityIndicatorView!
     @IBOutlet weak var descriptionView: UILabel!
     @IBOutlet weak var sex: UILabel!
     @IBOutlet weak var age: UILabel!
-    @IBOutlet weak var playerView: YTPlayerView!
+    @IBOutlet weak var ytPlayerView: YTPlayerView!
+    var currentLifetime : Int?
     var nextUsers : [User] = []
     var currentPosts : [Post] = []
+    var currentPost : Post?
     var currentUser : User?
     private var firstRound = true
     var locationHelper = LocationManager()
@@ -32,32 +38,50 @@ public class HomeViewController: UIViewController {
         super.viewDidLoad()
         waitingView.hidden = false
         waitingView.startAnimating()
-        playerView.delegate = self
+        ytPlayerView.delegate = self
         reloadNextUsers()
         locationHelper.test()
+        SpotifyHelper.addObserver(self)
     }
     
     
-    @IBAction func nextUser(sender: AnyObject) {
-        Like.addLike(from: PFUser.currentUser() as! User, to: currentUser!, bool: false)
-        consumeUser()
+    @IBAction func notLike(sender: AnyObject) {
+        next(false)
     }
     
     @IBAction func like(sender: AnyObject) {
-        Like.addLike(from: PFUser.currentUser() as! User, to: currentUser!, bool: true)
-        consumeUser()
+        next(true)
     }
     
-    func nextPost(sender: AnyObject) {
-        if (!currentPosts.isEmpty){
-            currentPosts.removeFirst().playInHome(self, first: false)
-        } else {
-            print("done")
+    func next(bool : Bool){
+        if let current = currentUser {
+            Like.addLike(from: PFUser.currentUser() as! User, to: current, bool: bool)
+            if consumeUser() == nil {
+                noMoreUsers()
+            }
         }
     }
     
-    func playPauseSPT(url : NSURL, start : Int, end : Int){
-//        if sptPlayPause.currentImage.
+    func noMoreUsers() {
+        presentViewController(Constants.noMoreUsersAlert(), animated: true) { 
+            self.consumeUser()
+        }
+    }
+    
+    
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>){
+        guard SpotifyHelper.isSet() else {
+            return
+        }
+        if keyPath == "currentPlaybackPosition" {
+            let time = Int((object as! SPTAudioStreamingController).currentPlaybackPosition)
+            if (time >= currentLifetime!) {
+                currentLifetime = Int.max
+                nextPost(self)
+            } else if time > currentPost!.start {
+                SpotifyHelper.player.seekToOffset(Double(currentPost!.start!), callback: nil)
+            }
+        }
     }
     
     func reloadNextUsers() {
@@ -69,23 +93,31 @@ public class HomeViewController: UIViewController {
             self.nextUsers = self.nextUsers + (results as? [User] ?? [])
             
             //Consume first user
-            if(self.firstRound){
-                self.firstRound = false
+            if(self.currentUser == nil){
+//                self.firstRound = false
                 self.consumeUser()
             }
         })
     }
     
-    func consumeUser(){
+    func consumeUser() -> User? {
         if(nextUsers.count < Constants.thresholdToReloadUsers){
             reloadNextUsers()
+            return nil
         }
         if nextUsers.isEmpty {
-//
+            noMoreUsers()
         } else {
             currentUser = nextUsers.removeFirst()
-            currentUser!.displayPosts(display)
+            currentUser!.displayPosts(self)  // display posts using self.display(user)
         }
+        return currentUser
+    }
+    
+    public func prepare(post : Post) {
+        currentPost = post
+        sptPlayerView.hidden = post.isYoutube()
+        ytPlayerView.hidden = !post.isYoutube()
     }
     
     public func display(user : User){
@@ -94,7 +126,22 @@ public class HomeViewController: UIViewController {
         age.text = String(user["age"] as! Int)
         sex.text = user["sex"] as! Bool ? "Man" :  "Woman"
         waitingView.hidden = true
-        currentPosts.removeFirst().playInHome(self, first: true)
+        nextTrack(true)
+    }
+    
+    
+    func nextTrack(first : Bool){
+        if (!currentPosts.isEmpty){
+            let post = currentPosts.removeFirst()
+            prepare(post)
+            post.playInHome(self, first: true)
+        } else {
+            
+        }
+    }
+
+    @IBAction func nextPost(sender: AnyObject) {
+        nextTrack(false)
     }
 }
 
@@ -104,7 +151,7 @@ extension HomeViewController : YTPlayerViewDelegate {
         if (state.rawValue == ended){
             nextPost(self)
         } else if (state.rawValue == 5){
-            playerView.playVideo()
+            ytPlayerView.playVideo()
         }
     }
 

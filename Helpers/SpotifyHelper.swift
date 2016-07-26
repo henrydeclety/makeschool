@@ -16,7 +16,7 @@ public class SpotifyHelper  : UIViewController{
     var logInViewController : SPTAuthViewController?
     var currentSender : UIViewController?
     
-    static public func play(track : NSURL){
+    static public func setUp() {
         if !player.loggedIn {
             do {
                 try player.startWithClientId(SPTAuth.defaultInstance().clientID)
@@ -25,13 +25,17 @@ public class SpotifyHelper  : UIViewController{
             }
         }
         SPTAudioStreamingController.sharedInstance().loginWithAccessToken(SPTAuth.defaultInstance().session.accessToken)
-//        let trackURI : NSURL = NSURL(string: "spotify:track:58s6EuEYJdlb0kO7awm3Vp")!
-        player.playURIs([track], fromIndex: 0, callback: { (error) in
-            if (error != nil){
-                NSLog("*** Auth error: %@", error)
-                return
-            }
-        })
+    }
+    
+    static public func play(track : NSURL, callback : SPTErrorableOperationCallback){
+        setUp()
+        player.playURIs([track], fromIndex: 0, callback: callback)
+    }
+    
+    static public func play(track : NSURL, from : Int){
+        play(track) { (error) in
+            player.seekToOffset(NSTimeInterval(from), callback: nil)
+        }
     }
     
     static public func pause() {
@@ -73,6 +77,7 @@ public class SpotifyHelper  : UIViewController{
     }
     
     public static func stop() {
+        pause()
         do {
             try player.stop()
         } catch {
@@ -80,6 +85,9 @@ public class SpotifyHelper  : UIViewController{
         }
     }
     
+    public static func addObserver(sender : UIViewController) {
+        player.addObserver(sender, forKeyPath: "currentPlaybackPosition", options: NSKeyValueObservingOptions.New, context: nil)
+    }
 }
 
 extension SpotifyHelper : SPTAuthViewDelegate {

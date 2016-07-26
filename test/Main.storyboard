@@ -131,7 +131,7 @@
         <!--Select-->
         <scene sceneID="RlG-lu-Xzc">
             <objects>
-                <viewController title="Select" id="agd-cd-sls" customClass="PlayerViewController" customModule="myApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Select" id="agd-cd-sls" customClass="SelecViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1fy-Ln-fKZ"/>
                         <viewControllerLayoutGuide type="bottom" id="HGi-Ph-bOC"/>
@@ -227,7 +227,7 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whi-I9-9Qc" userLabel="SPT Player View">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whi-I9-9Qc" userLabel="SPT Player View" customClass="SpotifyPlayerView" customModule="myApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="600" height="300"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jS1-7q-ZIU">
@@ -248,7 +248,7 @@
                                             <color key="titleColor" red="0.20000000000000001" green="0.68235294120000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="pauseSPT:" destination="agd-cd-sls" eventType="touchUpInside" id="EHf-3R-KDU"/>
+                                            <action selector="playPauseSPT:post:" destination="whi-I9-9Qc" eventType="touchUpInside" id="iSa-uc-4YB"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55K-E9-bIp">
@@ -308,6 +308,9 @@
                                         <exclude reference="pEa-pd-MTi"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <outlet property="playPauseSPT" destination="bTm-yt-X9E" id="oeJ-7a-pFp"/>
+                                </connections>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1X9-vd-HMX">
                                 <rect key="frame" x="20" y="364" width="560" height="45"/>
@@ -397,7 +400,6 @@
                         <outlet property="artistSPT" destination="IZu-gq-PlH" id="7ph-L8-ina"/>
                         <outlet property="end" destination="M23-wR-bqN" id="dKP-zp-m8l"/>
                         <outlet property="nameSPT" destination="jS1-7q-ZIU" id="KVi-Fz-DO2"/>
-                        <outlet property="playPauseSPT" destination="bTm-yt-X9E" id="FgJ-i5-tLc"/>
                         <outlet property="progressBar" destination="nI6-iW-mg0" id="v9L-oX-3P6"/>
                         <outlet property="sptPlayerView" destination="whi-I9-9Qc" id="GkF-wd-tqL"/>
                         <outlet property="start" destination="Ahh-7J-hek" id="0Ic-Lw-Zo2"/>
@@ -485,7 +487,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <action selector="nextUser:" destination="nfg-XC-aux" eventType="touchUpInside" id="s8f-ec-rma"/>
+                                    <action selector="notLike:" destination="nfg-XC-aux" eventType="touchUpInside" id="F2Q-z4-N22"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yoe-lU-yeS">
@@ -549,18 +551,24 @@
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RZa-kf-XF8">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RZa-kf-XF8" customClass="SpotifyPlayerView" customModule="myApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="198" width="600" height="268"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5gp-Dg-Oq0">
                                         <rect key="frame" x="0.0" y="179" width="300" height="89"/>
                                         <state key="normal" image="Pause"/>
+                                        <connections>
+                                            <action selector="playPauseSPT:post:" destination="RZa-kf-XF8" eventType="touchUpInside" id="pDJ-2j-Rxa"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAm-Mb-T1Q">
                                         <rect key="frame" x="300" y="179" width="300" height="89"/>
                                         <state key="normal" image="Next">
                                             <color key="titleColor" red="0.20000000000000001" green="0.68235294120000001" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="nextPost:" destination="nfg-XC-aux" eventType="touchUpInside" id="H75-ec-vsA"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QYk-MB-ygF">
                                         <rect key="frame" x="20" y="44" width="560" height="44"/>
@@ -601,6 +609,9 @@
                                         <exclude reference="lvj-yG-l01"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <outlet property="playPauseSPT" destination="5gp-Dg-Oq0" id="2ZC-1S-ILd"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -661,11 +672,14 @@
                     <connections>
                         <outlet property="age" destination="3p8-Sx-7k8" id="dCy-ZF-dcI"/>
                         <outlet property="descriptionView" destination="pSB-2w-RCJ" id="C7n-yX-aYH"/>
-                        <outlet property="playerView" destination="vCp-mh-mgH" id="htP-bW-1Ti"/>
                         <outlet property="sex" destination="mgL-YK-9p4" id="crY-AQ-eml"/>
+                        <outlet property="sptArtist" destination="QYk-MB-ygF" id="WMM-EG-Ig4"/>
+                        <outlet property="sptName" destination="m86-Ov-LrS" id="vJl-zI-2oa"/>
                         <outlet property="sptNext" destination="nAm-Mb-T1Q" id="Udv-5H-4De"/>
                         <outlet property="sptPlayPause" destination="5gp-Dg-Oq0" id="TrU-cK-Wq3"/>
+                        <outlet property="sptPlayerView" destination="RZa-kf-XF8" id="H4t-Lr-yWW"/>
                         <outlet property="waitingView" destination="5BY-y5-oaF" id="B87-ht-Hm1"/>
+                        <outlet property="ytPlayerView" destination="vCp-mh-mgH" id="EZ0-6W-P38"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="72R-Bl-9Ts" userLabel="First Responder" sceneMemberID="firstResponder"/>

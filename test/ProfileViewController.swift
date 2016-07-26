@@ -47,7 +47,7 @@ public class ProfileViewController: UIViewController {
     }
     
     func reloadTracks() {
-        User.current().displayPosts(display)
+        User.current().displayPosts(self)
         updateLogin()
     }
     
