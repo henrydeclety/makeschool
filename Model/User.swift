@@ -77,33 +77,18 @@ public class User : PFUser {
         }
     }
     
-//    func displayPosts(display : User -> Void) {
-        func displayPosts(sender : UIViewController) {
-
+    func displayPosts(callback : ([Post]) -> Void ) {
         Post.query(self).findObjectsInBackgroundWithBlock({ (results :[PFObject]?, error : NSError?) in
             guard error == nil else {
                 print("Error while fetching posts from Parse")
                 return
             }
             self.posts = results as? [Post] ?? []
+            callback(self.posts!)
             
-            if let home = sender as? HomeViewController {
-            for post in self.posts! {
-                if !post.isYoutube() && !SpotifyHelper.loggedIn() {
-                    home.currentUser = nil
-                    home.consumeUser()
-                    print("Spotify user dissmissed")
-                    return
-                }
-            }
-            }
-            if (!(self.posts?.isEmpty)!) {
-                if let homeTest = sender as? HomeViewController {
-                    homeTest.display(self)
-                } else {
-                    (sender as! ProfileViewController).display(self)
-                }
-            }
+            
+            
+            
         })
     }
 

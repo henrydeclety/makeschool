@@ -686,6 +686,73 @@
             </objects>
             <point key="canvasLocation" x="875" y="-424"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="Mtt-pT-gsw">
+            <objects>
+                <viewController id="cpp-VF-stH" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="r3H-Bo-5MV"/>
+                        <viewControllerLayoutGuide type="bottom" id="RQb-Jx-RoA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LwX-37-LgJ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="04h-u1-tjV">
+                                <rect key="frame" x="75" y="285" width="450" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMf-IW-G2f">
+                                <rect key="frame" x="75" y="360" width="450" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="XgG-dw-vp2">
+                                <rect key="frame" x="75" y="436" width="450" height="29"/>
+                                <segments>
+                                    <segment title="Man"/>
+                                    <segment title="Woman"/>
+                                </segments>
+                            </segmentedControl>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bzF-FT-RHj">
+                                <rect key="frame" x="75" y="66" width="450" height="169"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="bzF-FT-RHj" secondAttribute="height" multiplier="8:3" id="rC2-cS-xoV"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQj-pG-sxg">
+                                <rect key="frame" x="75" y="510" width="450" height="30"/>
+                                <color key="backgroundColor" red="0.33725490196078434" green="0.50196078431372548" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Sign Up">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vMf-IW-G2f" firstAttribute="width" secondItem="bzF-FT-RHj" secondAttribute="width" id="0a8-cJ-xeR"/>
+                            <constraint firstItem="04h-u1-tjV" firstAttribute="centerX" secondItem="LwX-37-LgJ" secondAttribute="centerX" id="1QX-X7-8nR"/>
+                            <constraint firstItem="bzF-FT-RHj" firstAttribute="width" secondItem="LwX-37-LgJ" secondAttribute="width" multiplier="3:4" id="3eb-PI-tHf"/>
+                            <constraint firstItem="WQj-pG-sxg" firstAttribute="centerX" secondItem="LwX-37-LgJ" secondAttribute="centerX" id="8O5-mN-KCl"/>
+                            <constraint firstItem="XgG-dw-vp2" firstAttribute="centerX" secondItem="LwX-37-LgJ" secondAttribute="centerX" id="B36-ev-KL2"/>
+                            <constraint firstItem="bzF-FT-RHj" firstAttribute="centerY" secondItem="LwX-37-LgJ" secondAttribute="centerY" multiplier="1:2" id="L1T-fG-IoU"/>
+                            <constraint firstItem="04h-u1-tjV" firstAttribute="centerY" secondItem="LwX-37-LgJ" secondAttribute="centerY" id="Rxm-pU-AR0"/>
+                            <constraint firstItem="WQj-pG-sxg" firstAttribute="centerY" secondItem="LwX-37-LgJ" secondAttribute="centerY" multiplier="7:4" id="UdD-Da-cCj"/>
+                            <constraint firstItem="XgG-dw-vp2" firstAttribute="centerY" secondItem="LwX-37-LgJ" secondAttribute="centerY" multiplier="6:4" id="XtZ-L3-DhU"/>
+                            <constraint firstItem="vMf-IW-G2f" firstAttribute="centerY" secondItem="LwX-37-LgJ" secondAttribute="centerY" multiplier="5:4" id="aX6-cx-Hfn"/>
+                            <constraint firstItem="WQj-pG-sxg" firstAttribute="width" secondItem="bzF-FT-RHj" secondAttribute="width" id="eHv-Uq-XPg"/>
+                            <constraint firstItem="bzF-FT-RHj" firstAttribute="centerX" secondItem="LwX-37-LgJ" secondAttribute="centerX" id="mHw-uI-Xj5"/>
+                            <constraint firstItem="vMf-IW-G2f" firstAttribute="centerX" secondItem="LwX-37-LgJ" secondAttribute="centerX" id="ms8-aE-djJ"/>
+                            <constraint firstItem="XgG-dw-vp2" firstAttribute="width" secondItem="bzF-FT-RHj" secondAttribute="width" id="wha-UG-r3S"/>
+                            <constraint firstItem="04h-u1-tjV" firstAttribute="width" secondItem="bzF-FT-RHj" secondAttribute="width" id="y8E-e8-a3N"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FgY-fu-0bn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-683" y="-980"/>
+        </scene>
         <!--Profile-->
         <scene sceneID="vxV-BD-aEI">
             <objects>

@@ -70,11 +70,7 @@ public class Post : PFObject, PFSubclassing {
         } else {
             sender.sptName.text = name
             sender.sptArtist.text = artist
-            if (SpotifyHelper.isPlaying()){
-            SpotifyHelper.pause()
-            }
-            SpotifyHelper.play(playableURI!, from: start!)
-            sender.currentLifetime = end
+            SpotifyHelper.play(playableURI!, sender: sender as SPTAudioStreamingPlaybackDelegate)
         }
     }
     

@@ -27,16 +27,21 @@ public class SpotifyHelper  : UIViewController{
         SPTAudioStreamingController.sharedInstance().loginWithAccessToken(SPTAuth.defaultInstance().session.accessToken)
     }
     
-    static public func play(track : NSURL, callback : SPTErrorableOperationCallback){
-        setUp()
-        player.playURIs([track], fromIndex: 0, callback: callback)
+    static public func setDelegate(sender : SPTAudioStreamingPlaybackDelegate) {
+        player.playbackDelegate = sender
     }
     
-    static public func play(track : NSURL, from : Int){
-        play(track) { (error) in
-            player.seekToOffset(NSTimeInterval(from), callback: nil)
-        }
+    static public func play(track : NSURL, sender : SPTAudioStreamingPlaybackDelegate){
+        setUp()
+        setDelegate(sender)
+        player.playURIs([track], fromIndex: 0, callback: nil)
     }
+    
+//    static public func play(track : NSURL, sender : SPTErrorableOperationCallback){
+//        play(track) { (error) in
+//            player.seekToOffset(NSTimeInterval(from), callback: nil)
+//        }
+//    }
     
     static public func pause() {
         player.setIsPlaying(false,callback : nil)

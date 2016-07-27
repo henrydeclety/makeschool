@@ -77,22 +77,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // 4
             // Otherwise set the LoginViewController to be the first
             let loginViewController = PFLogInViewController()
-            loginViewController.fields = [.UsernameAndPassword, .LogInButton, .SignUpButton, .PasswordForgotten, .Facebook]
+            loginViewController.fields = [.Facebook, .Default]
             loginViewController.delegate = parseLoginHelper
             
             let signUpViewController = PFSignUpViewController()
             
-            
             signUpViewController.delegate = parseLoginHelper
-            signUpViewController.fields = [.Additional,.Additional,.Additional,.UsernameAndPassword,.SignUpButton,.Email,.DismissButton]
-            
-            signUpViewController.signUpView?.additionalField?.placeholder = "First Name"
-            signUpViewController.signUpView?.additionalField?.placeholder = "Last Name"
+            signUpViewController.fields = [.Additional,.Default]
+//            signUpViewController.signUpView?.signUpButton?.setTitle("Continue", forState: UIControlState.Normal)
             let ageField = signUpViewController.signUpView?.additionalField
             ageField?.keyboardType = UIKeyboardType.NumberPad
-            ageField?.placeholder = "age"
-            signUpViewController.signUpView?.additionalField?.placeholder = "Sex (Male/Female)"
-            
+            ageField?.placeholder = "age"            
             loginViewController.signUpController = signUpViewController
             startViewController = loginViewController
         }

@@ -47,7 +47,12 @@ public class ProfileViewController: UIViewController {
     }
     
     func reloadTracks() {
-        User.current().displayPosts(self)
+        User.current().displayPosts { (posts : [Post]) in
+            if (!(posts.isEmpty)) {
+                self.display(User.current())
+                
+            }
+        }
         updateLogin()
     }
     

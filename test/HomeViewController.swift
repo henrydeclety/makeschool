@@ -23,16 +23,13 @@ public class HomeViewController: UIViewController {
     @IBOutlet weak var sex: UILabel!
     @IBOutlet weak var age: UILabel!
     @IBOutlet weak var ytPlayerView: YTPlayerView!
-    var currentLifetime : Int?
+    var waiting : Bool?
     var nextUsers : [User] = []
     var currentPosts : [Post] = []
     var currentPost : Post?
     var currentUser : User?
     private var firstRound = true
     var locationHelper = LocationManager()
-    
-    //cte
-    let ended = 1
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -75,12 +72,11 @@ public class HomeViewController: UIViewController {
         }
         if keyPath == "currentPlaybackPosition" {
             let time = Int((object as! SPTAudioStreamingController).currentPlaybackPosition)
-            if (time >= currentLifetime!) {
-                currentLifetime = Int.max
+            if (time >= currentPost?.end!) {
                 nextPost(self)
-            } else if time > currentPost!.start {
+           } else if time < currentPost!.start {
                 SpotifyHelper.player.seekToOffset(Double(currentPost!.start!), callback: nil)
-            }
+           }
         }
     }
     
@@ -103,24 +99,35 @@ public class HomeViewController: UIViewController {
     func consumeUser() -> User? {
         if(nextUsers.count < Constants.thresholdToReloadUsers){
             reloadNextUsers()
-            return nil
         }
         if nextUsers.isEmpty {
             noMoreUsers()
+            return nil
         } else {
-            currentUser = nextUsers.removeFirst()
-            currentUser!.displayPosts(self)  // display posts using self.display(user)
+            let user = nextUsers.removeFirst()
+            currentUser = user
+            user.displayPosts({ (posts: [Post]) in
+                for post in posts {
+                    if !post.isYoutube() && !SpotifyHelper.loggedIn() {
+                        self.currentUser = nil
+                        self.consumeUser()
+                        print("Spotify user dissmissed")
+                        return
+                    }
+                }
+                self.display(user)
+            })
         }
         return currentUser
     }
-    
-    public func prepare(post : Post) {
+
+    func prepare(post : Post) {
         currentPost = post
         sptPlayerView.hidden = post.isYoutube()
         ytPlayerView.hidden = !post.isYoutube()
     }
     
-    public func display(user : User){
+    func display(user : User){
         currentPosts = user.posts!
         descriptionView.text = user["description"] as? String ?? ""
         age.text = String(user["age"] as! Int)
@@ -131,33 +138,54 @@ public class HomeViewController: UIViewController {
     
     
     func nextTrack(first : Bool){
+        if currentPost != nil {
+            pause()
+            currentPost = nil
+        }
         if (!currentPosts.isEmpty){
             let post = currentPosts.removeFirst()
             prepare(post)
-            post.playInHome(self, first: true)
+            waiting = true
+            post.playInHome(self, first: first)
         } else {
-            
+            print("no more posts")
         }
     }
 
     @IBAction func nextPost(sender: AnyObject) {
         nextTrack(false)
     }
+    
+    func pause() {
+        if currentPost!.isYoutube() {
+            ytPlayerView.pauseVideo()
+        } else {
+            SpotifyHelper.pause()
+        }
+    }
 }
 
 extension HomeViewController : YTPlayerViewDelegate {
 
     public func playerView(playerView: YTPlayerView, didChangeToState state: YTPlayerState) {
-        if (state.rawValue == ended){
+        if (state.rawValue == Constants.ytEnded){
             nextPost(self)
-        } else if (state.rawValue == 5){
+        } else if (state.rawValue == Constants.ytQueued){
             ytPlayerView.playVideo()
         }
     }
 
 }
 
-extension HomeViewController : CLLocationManagerDelegate {
+extension HomeViewController : SPTAudioStreamingPlaybackDelegate {
     
+    public func audioStreaming(audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
+        if isPlaying && waiting! {
+            waiting = false
+            SpotifyHelper.player.seekToOffset(Double(currentPost!.start!), callback: nil)
+        }
+    }
 }
+
+
 
