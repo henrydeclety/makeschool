@@ -41,7 +41,7 @@ public class SearchViewController: UIViewController {
     }
     
     override public func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let dest = segue.destinationViewController as! PlayerViewController
+        let dest = segue.destinationViewController as! SelectViewController
         let details = tracksArray[tableView.indexPathForSelectedRow!.row]
         dest.maxTimeInterval = timeLeft
         if segue.identifier == "YTSelect" {
@@ -86,7 +86,6 @@ extension SearchViewController : UITableViewDelegate {
         if (!isHandling){
             let cell = tableView.cellForRowAtIndexPath(indexPath)
             cell?.selected = false
-            performSegueWithIdentifier(isYoutube! ? "YTSelect" : "SPTSelect", sender: self)
         }
     }
 }

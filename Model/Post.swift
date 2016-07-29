@@ -44,33 +44,24 @@ public class Post : PFObject, PFSubclassing {
         }
     }
     
+    public func getPlayableURI() -> NSURL {
+        if let uri = playableURI {
+            return uri
+        } else {
+            playableURI =  NSURL(string : self["playableURI"] as! String)
+            return playableURI!
+        }
+    }
+    
     public func load() {
         start = self["start"]! as? Int
         end = self["end"]! as? Int
         if isYoutube() {
             videoID = self["videoID"] as? String
         } else {
-            playableURI = NSURL(string : (self["playableURI"] as? String)!)
+            playableURI = getPlayableURI()
             name = self["name"] as? String
             artist = self["artist"] as? String
-        }
-    }
-    
-    public func playInHome(sender : HomeViewController, first : Bool) {
-        load()
-        if isYoutube() {
-            let dico = Constants.ytParams()
-            dico.setObject(Float(start!), forKey: "start")
-            dico.setObject(Float(end!), forKey: "end")
-            if (first){
-                sender.ytPlayerView.loadWithVideoId(videoID!, playerVars: dico as [NSObject : AnyObject])
-            } else {
-                sender.ytPlayerView.cueVideoById(videoID!, startSeconds: Float(start!), endSeconds: Float(end!), suggestedQuality: YTPlaybackQuality.Auto)
-            }
-        } else {
-            sender.sptName.text = name
-            sender.sptArtist.text = artist
-            SpotifyHelper.play(playableURI!, sender: sender as SPTAudioStreamingPlaybackDelegate)
         }
     }
     

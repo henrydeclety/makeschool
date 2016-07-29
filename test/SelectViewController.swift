@@ -1,5 +1,5 @@
 //
-//  PlayerViewController.swift
+//  SelectViewController.swift
 //  myApp
 //
 //  Created by Henry on 7/14/16.
@@ -13,7 +13,7 @@ import Parse
 import Bond
 
 
-public class PlayerViewController: UIViewController {
+public class SelectViewController : UIViewController {
     
     var post : Post!
     var maxTimeInterval : Int!
@@ -32,7 +32,6 @@ public class PlayerViewController: UIViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        SpotifyHelper.addObserver(self)
         setDelegates()
         if post.isYoutube() {
             setAsYT()
@@ -42,7 +41,7 @@ public class PlayerViewController: UIViewController {
     }
     
     public override func viewWillDisappear(animated: Bool) {
-        if post.isYoutube() {
+        if !post.isYoutube() {
             SpotifyHelper.stop()
         }
         super.viewWillDisappear(animated)
@@ -60,8 +59,8 @@ public class PlayerViewController: UIViewController {
     func setAsYT() {
         waitingForInfo()
         sptPlayerView.hidden = true
-        ytPlayerView.loadWithVideoId(post.videoID!, playerVars: Constants.ytParams() as [NSObject : AnyObject])
         ytPlayerView.delegate = self
+        ytPlayerView.loadWithVideoId(post.videoID!, playerVars: Constants.ytParams() as [NSObject : AnyObject])
     }
     
     func setAsSPT() {
@@ -70,6 +69,7 @@ public class PlayerViewController: UIViewController {
         artistSPT.text = post.artist
         waitingView.hidden = true
         ytPlayerView.hidden = true
+        SpotifyHelper.addObserver(self)
     }
     
     func setDelegates() {
@@ -136,7 +136,7 @@ public class PlayerViewController: UIViewController {
     }
 }
 
-extension PlayerViewController : UIPickerViewDataSource {
+extension SelectViewController : UIPickerViewDataSource {
 
     public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 2
@@ -175,7 +175,7 @@ extension PlayerViewController : UIPickerViewDataSource {
 }
 
 
-extension PlayerViewController : UIPickerViewDelegate {
+extension SelectViewController : UIPickerViewDelegate {
     
     public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (pickerView.tag == 0){
@@ -201,7 +201,7 @@ extension PlayerViewController : UIPickerViewDelegate {
 }
 
 
-extension PlayerViewController : YTPlayerViewDelegate {
+extension SelectViewController : YTPlayerViewDelegate {
 
     public func playerViewDidBecomeReady(playerView: YTPlayerView) {
         infoReceived()

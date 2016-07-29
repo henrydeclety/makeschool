@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import AVFoundation
 import youtube_ios_player_helper
 
 public class HomeViewController: UIViewController {
@@ -18,11 +19,13 @@ public class HomeViewController: UIViewController {
     @IBOutlet weak var sptArtist: UILabel!
     @IBOutlet weak var sptNext: UIButton!
     @IBOutlet weak var sptPlayPause: UIButton!
-    @IBOutlet weak var waitingView: UIActivityIndicatorView!
     @IBOutlet weak var descriptionView: UILabel!
     @IBOutlet weak var sex: UILabel!
     @IBOutlet weak var age: UILabel!
     @IBOutlet weak var ytPlayerView: YTPlayerView!
+    @IBOutlet weak var noMorePosts: UIView!
+    @IBOutlet weak var lookingForUsers: UIView!
+    
     var waiting : Bool?
     var nextUsers : [User] = []
     var currentPosts : [Post] = []
@@ -33,12 +36,15 @@ public class HomeViewController: UIViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        waitingView.hidden = false
-        waitingView.startAnimating()
         ytPlayerView.delegate = self
         reloadNextUsers()
         locationHelper.test()
-        SpotifyHelper.addObserver(self)
+        noMorePosts.hidden = true
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        } catch {
+            
+        }
     }
     
     
@@ -53,30 +59,37 @@ public class HomeViewController: UIViewController {
     func next(bool : Bool){
         if let current = currentUser {
             Like.addLike(from: PFUser.currentUser() as! User, to: current, bool: bool)
-            if consumeUser() == nil {
-                noMoreUsers()
-            }
+            consumeUser()
         }
     }
     
     func noMoreUsers() {
-        presentViewController(Constants.noMoreUsersAlert(), animated: true) { 
-            self.consumeUser()
-        }
+        lookingForUsers.hidden = false
+        consumeUser()
     }
     
     
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>){
-        guard SpotifyHelper.isSet() else {
+        guard SpotifyHelper.isPlaying() else {
             return
         }
         if keyPath == "currentPlaybackPosition" {
             let time = Int((object as! SPTAudioStreamingController).currentPlaybackPosition)
             if (time >= currentPost?.end!) {
+                pause()
                 nextPost(self)
            } else if time < currentPost!.start {
                 SpotifyHelper.player.seekToOffset(Double(currentPost!.start!), callback: nil)
            }
+        }
+    }
+    
+    func prepareForSpotifyPlay() {
+        if (Int(SpotifyHelper.player.currentTrackIndex) == currentUser!.nbOfSpotifyTracks() - 1){
+            SpotifyHelper.removeObserver(self)
+            SpotifyHelper.pause()
+        } else {
+            SpotifyHelper.next()
         }
     }
     
@@ -88,9 +101,7 @@ public class HomeViewController: UIViewController {
             }
             self.nextUsers = self.nextUsers + (results as? [User] ?? [])
             
-            //Consume first user
             if(self.currentUser == nil){
-//                self.firstRound = false
                 self.consumeUser()
             }
         })
@@ -102,27 +113,18 @@ public class HomeViewController: UIViewController {
         }
         if nextUsers.isEmpty {
             noMoreUsers()
-            return nil
         } else {
+            lookingForUsers.hidden = true
             let user = nextUsers.removeFirst()
             currentUser = user
-            user.displayPosts({ (posts: [Post]) in
-                for post in posts {
-                    if !post.isYoutube() && !SpotifyHelper.loggedIn() {
-                        self.currentUser = nil
-                        self.consumeUser()
-                        print("Spotify user dissmissed")
-                        return
-                    }
-                }
-                self.display(user)
-            })
+            user.getPosts("home", callback: display)
         }
         return currentUser
     }
 
     func prepare(post : Post) {
         currentPost = post
+        noMorePosts.hidden = true
         sptPlayerView.hidden = post.isYoutube()
         ytPlayerView.hidden = !post.isYoutube()
     }
@@ -130,9 +132,16 @@ public class HomeViewController: UIViewController {
     func display(user : User){
         currentPosts = user.posts!
         descriptionView.text = user["description"] as? String ?? ""
-        age.text = String(user["age"] as! Int)
-        sex.text = user["sex"] as! Bool ? "Man" :  "Woman"
-        waitingView.hidden = true
+        age.text = user["age"] as? String ?? ""
+        if let sex = user["sex"] as? Bool {
+            self.sex.text = sex ? "Man" :  "Woman"
+        } else {
+            self.sex.text = ""
+        }
+        if user.getTracksInfos().containsString("0") && SpotifyHelper.loggedIn() {
+            SpotifyHelper.play(user.getSpotifyURIs(), sender: self)
+            SpotifyHelper.addObserver(self)
+        }
         nextTrack(true)
     }
     
@@ -142,17 +151,19 @@ public class HomeViewController: UIViewController {
             pause()
             currentPost = nil
         }
-        if (!currentPosts.isEmpty){
-            let post = currentPosts.removeFirst()
-            prepare(post)
-            waiting = true
-            post.playInHome(self, first: first)
+        if currentPosts.isEmpty {
+            noMorePosts.hidden = false
         } else {
-            print("no more posts")
+            prepare(currentPosts.removeFirst())
+            waiting = true
+            play(currentPost!, first: first)
         }
     }
 
     @IBAction func nextPost(sender: AnyObject) {
+        if !currentPost!.isYoutube() {
+            prepareForSpotifyPlay()
+        }
         nextTrack(false)
     }
     
@@ -160,8 +171,34 @@ public class HomeViewController: UIViewController {
         if currentPost!.isYoutube() {
             ytPlayerView.pauseVideo()
         } else {
-            SpotifyHelper.pause()
+//            SpotifyHelper.pause()
         }
+    }
+    
+    public func play(post : Post, first : Bool) {
+        post.load()
+        if post.isYoutube() {
+            let dico = getYtParams(post)
+            if (first){
+                ytPlayerView.loadWithVideoId(post.videoID!, playerVars: dico as [NSObject : AnyObject])
+            } else {
+                ytPlayerView.cueVideoById(post.videoID!, startSeconds: Float(post.start!), endSeconds: Float(post.end!), suggestedQuality: YTPlaybackQuality.Auto)
+            }
+        } else {
+            sptName.text = post.name
+            sptArtist.text = post.artist
+            SpotifyHelper.play()
+//            SpotifyHelper.play(post.playableURI!, sender: self)
+        }
+    }
+    
+    func getYtParams(post : Post) -> NSMutableDictionary {
+        let dico = Constants.ytParams()
+        dico.setObject(0, forKey: "showinfo")
+        dico.setObject(0, forKey: "controls")
+        dico.setObject(Float(post.start!), forKey: "start")
+        dico.setObject(Float(post.end!), forKey: "end")
+        return dico
     }
 }
 

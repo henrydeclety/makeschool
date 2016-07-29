@@ -12,6 +12,8 @@
 		6663AC3F1D404CA00063D20F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6663AC3E1D404CA00063D20F /* Constants.swift */; };
 		6663AC431D4050EB0063D20F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6663AC421D4050EB0063D20F /* LocationManager.swift */; };
 		667B59261D4461BF0005A38A /* SpotifyTrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667B59251D4461BF0005A38A /* SpotifyTrackCell.swift */; };
+		66954BBA1D4AB7FE00777B9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66954BB91D4AB7FE00777B9D /* GoogleService-Info.plist */; };
+		66954BBC1D4ABF3100777B9D /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66954BBB1D4ABF3100777B9D /* ChatViewController.swift */; };
 		669FB30B1D4085A600DDE6FD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669FB30A1D4085A600DDE6FD /* ProfileViewController.swift */; };
 		669FB30D1D4086EC00DDE6FD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669FB30C1D4086EC00DDE6FD /* SettingsViewController.swift */; };
 		66D9D45F1D40ADB1005433D9 /* ParseLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D9D45E1D40ADB1005433D9 /* ParseLoginHelper.swift */; };
@@ -21,6 +23,8 @@
 		66DB4A9B1D42A63900C92A4E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB4A9A1D42A63900C92A4E /* AVFoundation.framework */; };
 		66DB4A9D1D42A64900C92A4E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB4A9C1D42A64900C92A4E /* SystemConfiguration.framework */; };
 		66DC8C2E1D47152400A606AD /* SpotifyPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DC8C2D1D47152400A606AD /* SpotifyPlayerView.swift */; };
+		66DC983A1D4B32220046D93D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DC98391D4B32220046D93D /* Message.swift */; };
+		66DE83C01D486F7E00DA253D /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DE83BF1D486F7E00DA253D /* InitialViewController.swift */; };
 		66E0802E1D400BF5001888EF /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E0802D1D400BF5001888EF /* MatchesViewController.swift */; };
 		66E080311D400F7F001888EF /* MatchesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E080301D400F7F001888EF /* MatchesCell.swift */; };
 		66F312D71D4586C1004318A7 /* YoutubeVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F312D61D4586C1004318A7 /* YoutubeVideoCell.swift */; };
@@ -67,6 +71,8 @@
 		6663AC3E1D404CA00063D20F /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Helpers/Constants.swift; sourceTree = SOURCE_ROOT; };
 		6663AC421D4050EB0063D20F /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		667B59251D4461BF0005A38A /* SpotifyTrackCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyTrackCell.swift; sourceTree = "<group>"; };
+		66954BB91D4AB7FE00777B9D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		66954BBB1D4ABF3100777B9D /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		669FB30A1D4085A600DDE6FD /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		669FB30C1D4086EC00DDE6FD /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		66D9D45E1D40ADB1005433D9 /* ParseLoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseLoginHelper.swift; path = Helpers/ParseLoginHelper.swift; sourceTree = SOURCE_ROOT; };
@@ -76,6 +82,8 @@
 		66DB4A9A1D42A63900C92A4E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		66DB4A9C1D42A64900C92A4E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		66DC8C2D1D47152400A606AD /* SpotifyPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyPlayerView.swift; sourceTree = "<group>"; };
+		66DC98391D4B32220046D93D /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		66DE83BF1D486F7E00DA253D /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		66E0802D1D400BF5001888EF /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
 		66E080301D400F7F001888EF /* MatchesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesCell.swift; sourceTree = "<group>"; };
 		66F312D61D4586C1004318A7 /* YoutubeVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeVideoCell.swift; sourceTree = "<group>"; };
@@ -183,6 +191,7 @@
 				BA49F31C1D3D931900D53474 /* User.swift */,
 				BA49F31E1D3D9E5500D53474 /* Post.swift */,
 				660196311D3F4A08001B1EF8 /* Like.swift */,
+				66DC98391D4B32220046D93D /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -216,18 +225,21 @@
 			isa = PBXGroup;
 			children = (
 				BA5973571D36B24B00201D2F /* AppDelegate.swift */,
+				66954BBB1D4ABF3100777B9D /* ChatViewController.swift */,
 				BA5973591D36B24B00201D2F /* SearchViewController.swift */,
 				BA59735E1D36B24B00201D2F /* Assets.xcassets */,
 				BADE5CD21D3875A800827542 /* Main.storyboard */,
 				BA5973601D36B24B00201D2F /* LaunchScreen.storyboard */,
 				BA5973631D36B24B00201D2F /* Info.plist */,
-				BADE5C441D384D0500827542 /* SelectViewController.swift */,
+				66954BB91D4AB7FE00777B9D /* GoogleService-Info.plist */,
 				BADE5CB01D38553500827542 /* myApp-Bridging-Header.h */,
+				BADE5C441D384D0500827542 /* SelectViewController.swift */,
 				BA49F3181D3D5D6200D53474 /* HomeViewController.swift */,
 				66E0802D1D400BF5001888EF /* MatchesViewController.swift */,
 				669FB30A1D4085A600DDE6FD /* ProfileViewController.swift */,
 				669FB30C1D4086EC00DDE6FD /* SettingsViewController.swift */,
 				66DB4A961D42995A00C92A4E /* SpotifySelectionViewController.swift */,
+				66DE83BF1D486F7E00DA253D /* InitialViewController.swift */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -377,6 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BADE5CD31D3875A800827542 /* Main.storyboard in Resources */,
+				66954BBA1D4AB7FE00777B9D /* GoogleService-Info.plist in Resources */,
 				BA5973621D36B24B00201D2F /* LaunchScreen.storyboard in Resources */,
 				BA59735F1D36B24B00201D2F /* Assets.xcassets in Resources */,
 			);
@@ -533,12 +546,15 @@
 				66DC8C2E1D47152400A606AD /* SpotifyPlayerView.swift in Sources */,
 				665FB5AA1D42DDFB0093AEEE /* SpotifyHelper.swift in Sources */,
 				660196321D3F4A08001B1EF8 /* Like.swift in Sources */,
+				66DC983A1D4B32220046D93D /* Message.swift in Sources */,
 				66E0802E1D400BF5001888EF /* MatchesViewController.swift in Sources */,
 				BA49F31D1D3D931900D53474 /* User.swift in Sources */,
 				669FB30D1D4086EC00DDE6FD /* SettingsViewController.swift in Sources */,
+				66954BBC1D4ABF3100777B9D /* ChatViewController.swift in Sources */,
 				66D9D45F1D40ADB1005433D9 /* ParseLoginHelper.swift in Sources */,
 				66D9D4611D40B63C005433D9 /* ErrorHandling.swift in Sources */,
 				6663AC3F1D404CA00063D20F /* Constants.swift in Sources */,
+				66DE83C01D486F7E00DA253D /* InitialViewController.swift in Sources */,
 				669FB30B1D4085A600DDE6FD /* ProfileViewController.swift in Sources */,
 				66DB4A971D42995A00C92A4E /* SpotifySelectionViewController.swift in Sources */,
 				BA5973581D36B24B00201D2F /* AppDelegate.swift in Sources */,

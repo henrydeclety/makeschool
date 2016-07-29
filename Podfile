@@ -11,6 +11,10 @@ target 'myApp' do
   pod 'ParseFacebookUtilsV4'
   pod 'ParseUI'
   pod "ConvenienceKit"
+  pod 'JSQMessagesViewController'
+  pod 'Firebase'
+  pod 'Firebase/Database'
+  pod 'Firebase/Auth'
 
   target 'myAppTests' do
     inherit! :search_paths

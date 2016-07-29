@@ -11,15 +11,29 @@ import Parse
 
 public class ProfileViewController: UIViewController {
     
+    @IBOutlet weak var completitionLabel: UILabel!
+    @IBOutlet weak var descriptionView: UILabel!
+    @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var loginLabel: UILabel!
-    let maxTimeAllowed = 90
+    let maxTimeAllowed = 900
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var time: UILabel!
     public var tracks : [Post] = [] {
         didSet {
             tableView.reloadData()
+            updateTrackInfos()
         }
+    }
+    
+    func updateTrackInfos() {
+        var result : String = ""
+        for track in tracks {
+            result = result + (track.isYoutube() ? "1" : "0")
+        }
+        User.current()["hasContent"] = result != ""
+        User.current()["trackInfos"] = result
+        User.current().saveInBackground()
     }
     
     override public func viewDidLoad() {
@@ -28,14 +42,9 @@ public class ProfileViewController: UIViewController {
         reloadTracks()
     }
     
-//    static public func defaultInstance() -> UIViewController {
-//        return self
-//    }
-    
-    override public func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-//        reloadTracks()
+    @IBAction func editProfile(sender: AnyObject) {
     }
+    
     
     func display(user : User){
         tracks = user.posts!
@@ -47,12 +56,7 @@ public class ProfileViewController: UIViewController {
     }
     
     func reloadTracks() {
-        User.current().displayPosts { (posts : [Post]) in
-            if (!(posts.isEmpty)) {
-                self.display(User.current())
-                
-            }
-        }
+        User.current().getPosts("profile", callback: display)
         updateLogin()
     }
     
@@ -108,7 +112,7 @@ public class ProfileViewController: UIViewController {
     }
     
     @IBAction func unwind(segue: UIStoryboardSegue) {
-        tracks.append((segue.sourceViewController as! PlayerViewController).post!)
+        tracks.append((segue.sourceViewController as! SelectViewController).post!)
     }
 }
 
@@ -143,19 +147,7 @@ extension ProfileViewController : UITableViewDelegate {
     
     public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-//            tracks[indexPath.row] = nil
-            
             tracks.removeAtIndex(indexPath.row).deleteInBackground()
-            
-//            tableView.reloadData()
-            
-//            tracks[indexPath.row].deleteInBackgroundWithBlock({ (result, error) in
-//                if error != nil {
-//                    print("Error while deleting")
-//                } else {
-//                    reloadTracks()
-//                }
-//            })
         }
     }
     

@@ -31,16 +31,20 @@ public class SpotifyHelper  : UIViewController{
         player.playbackDelegate = sender
     }
     
-    static public func play(track : NSURL, sender : SPTAudioStreamingPlaybackDelegate){
+    static public func play(tracks : [NSURL], sender : SPTAudioStreamingPlaybackDelegate){
         setUp()
         setDelegate(sender)
-        player.playURIs([track], fromIndex: 0, callback: nil)
+        player.playURIs(tracks, fromIndex: 0, callback: nil)
+        pause()
     }
     
-//    static public func play(track : NSURL, sender : SPTErrorableOperationCallback){
-//        play(track) { (error) in
-//            player.seekToOffset(NSTimeInterval(from), callback: nil)
-//        }
+    static public func next(){
+        player.skipNext(nil)
+    }
+//    static public func play(track : NSURL, sender : SPTAudioStreamingPlaybackDelegate){
+//        setUp()
+//        setDelegate(sender)
+//        player.playURIs([track], fromIndex: 0, callback: nil)
 //    }
     
     static public func pause() {
@@ -92,6 +96,10 @@ public class SpotifyHelper  : UIViewController{
     
     public static func addObserver(sender : UIViewController) {
         player.addObserver(sender, forKeyPath: "currentPlaybackPosition", options: NSKeyValueObservingOptions.New, context: nil)
+    }
+    
+    public static func removeObserver(sender : UIViewController) {
+        player.removeObserver(sender, forKeyPath: "currentPlaybackPosition")
     }
 }
 

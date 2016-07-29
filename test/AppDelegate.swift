@@ -11,6 +11,7 @@ import Parse
 import FBSDKCoreKit
 import ParseUI
 import ParseFacebookUtilsV4
+import Firebase
 
 
 @UIApplicationMain
@@ -23,21 +24,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         super.init()
         
-        parseLoginHelper = ParseLoginHelper {[unowned self] user, error in
+        parseLoginHelper = ParseLoginHelper {[unowned self] user, error, signUp in
             // Initialize the ParseLoginHelper with a callback
             if let error = error {
+                
                 // 1
                 ErrorHandling.defaultErrorHandler(error)
             } else  if let _ = user {
                 // if login was successful, display the TabBarController
                 // 2
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let homeController = storyboard.instantiateViewControllerWithIdentifier("HomeController")
-                // 3
-                
-               // let navController = UINavigationController(rootViewController: homeController)
-                
-                self.window?.rootViewController!.presentViewController(homeController, animated:true, completion:nil)
+                let homeController =  storyboard.instantiateViewControllerWithIdentifier("HomeController") as! UINavigationController
+                let finishSignUp = storyboard.instantiateViewControllerWithIdentifier(Constants.finishSignUp)
+                let root = self.window?.rootViewController as! PFLogInViewController
+                let destination = signUp ? finishSignUp : homeController
+                let current = signUp ? root.signUpController! : root
+                current.presentViewController(destination, animated:true, completion:nil)
             }
         }
     }
@@ -62,6 +64,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 1
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
         
+        
+        //SetUp Firebase
+        FIRApp.configure()
+        FIRAuth.auth()?.signInAnonymouslyWithCompletion({ (user, error) in
+            guard error == nil else {
+                ErrorHandling.defaultErrorHandler(error!)
+                return
+            }
+            let isAnonymous = user!.anonymous  // true
+            let uid = user!.uid
+        })
+
         // check if we have logged in user
         // 2
         let user = PFUser.currentUser()
@@ -69,27 +83,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let startViewController: UIViewController
         
         if (user != nil) {
-            // 3
-            // if we have a user, set the TabBarController to be the initial view controller
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             startViewController = storyboard.instantiateViewControllerWithIdentifier("HomeController") as! UINavigationController
         } else {
-            // 4
-            // Otherwise set the LoginViewController to be the first
-            let loginViewController = PFLogInViewController()
-            loginViewController.fields = [.Facebook, .Default]
-            loginViewController.delegate = parseLoginHelper
-            
-            let signUpViewController = PFSignUpViewController()
-            
-            signUpViewController.delegate = parseLoginHelper
-            signUpViewController.fields = [.Additional,.Default]
-//            signUpViewController.signUpView?.signUpButton?.setTitle("Continue", forState: UIControlState.Normal)
-            let ageField = signUpViewController.signUpView?.additionalField
-            ageField?.keyboardType = UIKeyboardType.NumberPad
-            ageField?.placeholder = "age"            
-            loginViewController.signUpController = signUpViewController
-            startViewController = loginViewController
+            startViewController = logInController()
         }
         
         // 5
@@ -101,6 +98,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
+    
+    
     
     //MARK: Facebook Integration
     
@@ -132,6 +131,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
         }
     }
+    
+    func logInController() -> PFLogInViewController {
+        let loginViewController = PFLogInViewController()
+        let signUpViewController = PFSignUpViewController()
+        
+        loginViewController.delegate = parseLoginHelper
+        signUpViewController.delegate = parseLoginHelper
+        
+        signUpViewController.fields = [.Additional,.Default]
+        loginViewController.fields = [.Facebook, .Default]
+        signUpViewController.emailAsUsername = true
+        
+        signUpViewController.signUpView?.signUpButton?.setTitle("Continue", forState: UIControlState.Normal)
+        let ageField = signUpViewController.signUpView?.additionalField
+        ageField?.keyboardType = UIKeyboardType.NumberPad
+        ageField?.placeholder = "age"
+        loginViewController.signUpController = signUpViewController
+        return loginViewController
+    }
+
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

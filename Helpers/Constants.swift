@@ -18,13 +18,15 @@ public class Constants {
     public static let ytEnded = 1
     public static let ytQueued = 5
 
+    public static let finishSignUp = "EndOfSignUp"
+    public static let home = "HomeController"
     
     public static let fbGraphRequestParameters : [NSObject : AnyObject]! = ["fields": "id, name, first_name, last_name, email, age_range, gender, birthday, about, bio"]
 
     
     public static func ytParams() -> NSMutableDictionary{
         let ytParams = NSMutableDictionary()
-       // ytParams.setObject(0, forKey: "autohide")
+        ytParams.setObject(3, forKey: "iv_load_policy")
         ytParams.setObject(1, forKey: "playsinline")
         ytParams.setObject(0, forKey: "rel")
         ytParams.setObject("http://www.youtube.com", forKey: "origin")
@@ -37,4 +39,14 @@ public class Constants {
         controller.addAction(button)
         return controller
     }
+    
+//    public static func tapGestureDissmissKeyboard(sender : UIViewController) {
+//        let tap = UITapGestureRecognizer(target: sender, action: #selector((void) -> sender.view.endEditing(true)))
+//        sender.view.addGestureRecognizer(tap)
+//    }
+    
+//    public static func dissmissKeyboard(sender : UIViewController) -> (void) -> (void) {
+//        return
+//    }
+    
 }
