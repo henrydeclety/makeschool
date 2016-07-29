@@ -32,7 +32,7 @@ class Message : NSObject, JSQMessageData {
     }
     
     func isMediaMessage() -> Bool {
-        return imageUrl_ != nil
+        return false
     }
     
     func date() -> NSDate! {

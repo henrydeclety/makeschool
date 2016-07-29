@@ -120,6 +120,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 } else {
                     SPTAuth.defaultInstance().session = session
                     (PFUser.currentUser()! as! User).loggedInSpotify()
+                    
+                    
                     let profileTest = (self.window!.rootViewController as! UINavigationController).visibleViewController
                     if let success = profileTest as? ProfileViewController {
                         success.updateLogin()

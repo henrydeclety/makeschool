@@ -1219,6 +1219,7 @@
                                                     <state key="normal" title="Facetime!"/>
                                                     <connections>
                                                         <action selector="facetime:" destination="koW-bh-fn9" eventType="touchUpInside" id="Kwz-og-tZ1"/>
+                                                        <segue destination="Y41-UA-LPN" kind="show" id="dI5-Y8-QrI"/>
                                                     </connections>
                                                 </button>
                                             </subviews>

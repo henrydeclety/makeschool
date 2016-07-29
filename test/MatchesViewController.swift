@@ -12,6 +12,7 @@ import Parse
 class MatchesViewController: UIViewController {
     
     var matches : [User] = []
+    var uIds : [String] = []
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -29,11 +30,14 @@ class MatchesViewController: UIViewController {
                 return
             }
             for like in results! {
-                if (like["user1"].objectId == PFUser.currentUser()!.objectId ){
-                    self.matches.append(like["user2"] as! User)
+                let user1 = like["user1"] as! User
+                let user2 = like["user2"] as! User
+                if (user1.objectId == PFUser.currentUser()!.objectId ){
+                    self.matches.append(user2)
                 } else {
-                    self.matches.append(like["user1"] as! User)
+                    self.matches.append(user1)
                 }
+                self.uIds.append(user1.objectId! + user2.objectId!)
             }
             self.tableView.reloadData()
         }
@@ -55,12 +59,10 @@ extension MatchesViewController : UITableViewDataSource {
         return matches.count
     }
     
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("MatchesCell") as! MatchesCell
         cell.displayUser(matches[indexPath.row])
         return cell
     }
-    
     
 }

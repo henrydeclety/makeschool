@@ -29,11 +29,19 @@ class MatchesCell: UITableViewCell {
     }
     
     func displayUser(user : User){
-        descriptionView.text = user["description"] as? String ?? ""
-        age = String(user["age"] as! Int)
-        sex = user["sex"] as! Bool ? "Man" :  "Woman"
-        name = (user["firstName"] as! String)
+        user.load()
+        
+        descriptionView.text = user.descriptionView
+        age = String(user.age())
+        sex = user.sex! ? "Man" :  "Woman"
+        name = user.firstName
         title.text = name! + ", " + age!
+        
+//        descriptionView.text = user["description"] as? String ?? ""
+//        age = String(user["age"] as! Int)
+//        sex = user["sex"] as! Bool ? "Man" :  "Woman"
+//        name = (user["firstName"] as! String)
+//        title.text = name! + ", " + age!
     }
 
 }

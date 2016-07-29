@@ -15,21 +15,39 @@ import FirebaseDatabase
 class ChatViewController: JSQMessagesViewController {
 
     var messages = [Message]()
-    var avatars = Dictionary<String, UIImage>()
+    var avatars = Dictionary<String, JSQMessagesAvatarImage>()
     let outgoingBubbleImageView = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
     let incomingBubbleImageView = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleGreenColor())
     var senderImageUrl: String!
     var batchMessages = true
     var ref: FIRDatabaseReference!
     var messagesRef: FIRDatabaseReference!
+    var profileImageUrl: String?
+    var currentUser : User!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        inputToolbar.contentView.leftBarButtonItem = nil
+        automaticallyScrollsToMostRecentMessage = true
+        ref = FIRDatabase.database().reference()
+        messagesRef = ref.child("all").child("chats").child("convers1")
         
-//        self.ref!.child("users").child("").setValue(["username": ""])
+        currentUser = User.current()
+        senderId = currentUser.objectId
+        senderDisplayName = currentUser.firstName
         
+//        let profileImageUrl = user?.providerData["cachedUserProfile"]?["profile_image_url_https"] as? NSString
+        
+        if let urlString = profileImageUrl {
+            setupAvatarImage(senderId!, imageUrl: urlString as String, incoming: false)
+            senderImageUrl = urlString as String
+        } else {
+            setupAvatarColor(senderId!, incoming: false)
+            senderImageUrl = ""
+        }
+        setupFirebase()
     }
-    
     
     func setupFirebase() {
         ref = FIRDatabase.database().reference()
@@ -64,7 +82,7 @@ class ChatViewController: JSQMessagesViewController {
                 if let data = NSData(contentsOfURL: url) {
                     let image = UIImage(data: data)
                     let diameter = incoming ? UInt(collectionView.collectionViewLayout.incomingAvatarViewSize.width) : UInt(collectionView.collectionViewLayout.outgoingAvatarViewSize.width)
-                    let avatarImage = JSQMessagesAvatarFactory.avatarWithImage(image, diameter: diameter)
+                    let avatarImage = JSQMessagesAvatarImageFactory.avatarImageWithImage(image, diameter: diameter)
                     avatars[name] = avatarImage
                     return
                 }
@@ -85,29 +103,10 @@ class ChatViewController: JSQMessagesViewController {
         let color = UIColor(red: r, green: g, blue: b, alpha: 0.5)
         
         let nameLength = name.characters.count
-        let initials : String? = name.substringToIndex(sender.startIndex.advancedBy(min(3, nameLength)))
-        let userImage = JSQMessagesAvatarFactory.avatarWithUserInitials(initials, backgroundColor: color, textColor: UIColor.blackColor(), font: UIFont.systemFontOfSize(CGFloat(13)), diameter: diameter)
+        let initials : String? = name.substringToIndex(name.startIndex.advancedBy(min(3, nameLength)))
+        let userImage = JSQMessagesAvatarImageFactory.avatarImageWithUserInitials(initials, backgroundColor: color, textColor: UIColor.blackColor(), font: UIFont.systemFontOfSize(CGFloat(13)), diameter: diameter)
         
         avatars[name] = userImage
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        inputToolbar.contentView.leftBarButtonItem = nil
-        automaticallyScrollsToMostRecentMessage = true
-        navigationController?.navigationBar.topItem?.title = "Logout"
-        
-        sender = (sender != nil) ? sender : "Anonymous"
-        let profileImageUrl = user?.providerData["cachedUserProfile"]?["profile_image_url_https"] as? NSString
-        if let urlString = profileImageUrl {
-            setupAvatarImage(sender, imageUrl: urlString as String, incoming: false)
-            senderImageUrl = urlString as String
-        } else {
-            setupAvatarColor(sender, incoming: false)
-            senderImageUrl = ""
-        }
-        
-        setupFirebase()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -119,11 +118,10 @@ class ChatViewController: JSQMessagesViewController {
         super.viewWillDisappear(animated)
         
         if ref != nil {
-            ref.unauth()
+//            ref.unauth()
         }
     }
     
-    // ACTIONS
     
     func receivedMessagePressed(sender: UIBarButtonItem) {
         // Simulate reciving message
@@ -131,10 +129,10 @@ class ChatViewController: JSQMessagesViewController {
         scrollToBottomAnimated(true)
     }
     
-    override func didPressSendButton(button: UIButton!, withMessageText text: String!, sender: String!, date: NSDate!) {
+    override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
         
-        sendMessage(text, sender: sender)
+        sendMessage(text, sender: senderId)
         
         finishSendingMessage()
     }
@@ -147,23 +145,23 @@ class ChatViewController: JSQMessagesViewController {
         return messages[indexPath.item]
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, bubbleImageViewForItemAtIndexPath indexPath: NSIndexPath!) -> UIImageView! {
-        let message = messages[indexPath.item]
-        
-        if message.sender() == sender {
-            return UIImageView(image: outgoingBubbleImageView.image, highlightedImage: outgoingBubbleImageView.highlightedImage)
-        }
-        
-        return UIImageView(image: incomingBubbleImageView.image, highlightedImage: incomingBubbleImageView.highlightedImage)
+    override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+            return JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.blueColor())
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageViewForItemAtIndexPath indexPath: NSIndexPath!) -> UIImageView! {
+    override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
         let message = messages[indexPath.item]
-        if let avatar = avatars[message.sender()] {
-            return UIImageView(image: avatar)
+        let avatar = avatars[message.senderId()]
+        return JSQMessagesAvatarImageFactory.avatarImageWithImage(avatar?.avatarImage, diameter: UInt(collectionView.collectionViewLayout.outgoingAvatarViewSize.width))
+    }
+    
+    func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageViewForItemAtIndexPath indexPath: NSIndexPath!) -> UIImageView! {
+        let message = messages[indexPath.item]
+        if let avatar = avatars[message.senderId()] {
+            return UIImageView(image: avatar.avatarImage)
         } else {
-            setupAvatarImage(message.sender(), imageUrl: message.imageUrl(), incoming: true)
-            return UIImageView(image:avatars[message.sender()])
+            setupAvatarImage(message.senderId(), imageUrl: message.imageUrl(), incoming: true)
+            return UIImageView(image:avatars[message.senderId()]?.avatarImage)
         }
     }
     
@@ -175,7 +173,7 @@ class ChatViewController: JSQMessagesViewController {
         let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
         
         let message = messages[indexPath.item]
-        if message.sender() == sender {
+        if message.senderId() == senderId {
             cell.textView.textColor = UIColor.blackColor()
         } else {
             cell.textView.textColor = UIColor.whiteColor()
@@ -195,41 +193,50 @@ class ChatViewController: JSQMessagesViewController {
         let message = messages[indexPath.item];
         
         // Sent by me, skip
-        if message.sender() == sender {
+        if message.senderId() == senderId {
             return nil;
         }
         
         // Same as previous sender, skip
         if indexPath.item > 0 {
             let previousMessage = messages[indexPath.item - 1];
-            if previousMessage.sender() == message.sender() {
+            if previousMessage.senderId() == message.senderId() {
                 return nil;
             }
         }
         
-        return NSAttributedString(string:message.sender())
+        return NSAttributedString(string:message.senderId())
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
         let message = messages[indexPath.item]
         
         // Sent by me, skip
-        if message.sender() == sender {
+        if message.senderId() == senderId {
             return CGFloat(0.0);
         }
         
         // Same as previous sender, skip
         if indexPath.item > 0 {
             let previousMessage = messages[indexPath.item - 1];
-            if previousMessage.sender() == message.sender() {
+            if previousMessage.senderId() == message.senderId() {
                 return CGFloat(0.0);
             }
         }
         
         return kJSQMessagesCollectionViewCellLabelHeightDefault
     }
-}
 
+    func collectionView(collectionView: JSQMessagesCollectionView!, bubbleImageViewForItemAtIndexPath indexPath: NSIndexPath!) -> UIImageView! {
+        let message = messages[indexPath.item]
+        
+        if message.senderId() == senderId {
+            return UIImageView(image: outgoingBubbleImageView.messageBubbleImage, highlightedImage: outgoingBubbleImageView.messageBubbleHighlightedImage)
+        }
+        
+        return UIImageView(image: incomingBubbleImageView.messageBubbleImage, highlightedImage: incomingBubbleImageView.messageBubbleHighlightedImage)
+    }
+    
 
 
 }

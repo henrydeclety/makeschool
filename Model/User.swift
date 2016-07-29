@@ -22,6 +22,21 @@ public class User : PFUser {
     public var about : String?
     public var isLoggedInSpoti : Bool?
     public var trackInfos : String?
+    public var descriptionView : String?
+    
+    func load() {
+        fbID = self["fbID"] as? String ?? ""
+        birthday = self["birthday"] as? String ?? ""
+        firstName = self["firstName"] as? String ?? ""
+        lastName = self["lastName"] as? String ?? ""
+        about = self["about"] as? String ?? ""
+        trackInfos = self["trackInfos"] as? String ?? ""
+        ageMin = self["ageMin"] as? Int ?? 0
+        ageMax = self["ageMax"] as? Int ?? 0
+        sex = self["sex"] as? Bool
+        descriptionView = self["description"] as? String ?? ""
+
+    }
     
     static func findUsersQuery() -> PFQuery {
         let userquery = PFUser.query()?.whereKey("objectId", notEqualTo: current().objectId!)
@@ -30,19 +45,21 @@ public class User : PFUser {
     }
     
     public static func current() -> User {
-        return PFUser.currentUser() as! User
+        let user = PFUser.currentUser() as! User
+        user.load()
+        return user
     }
     
     func age() -> Int {
         
         if let _ = birthday {
-            let date = NSDate()
-            let calendar = NSCalendar.currentCalendar()
-            let components = calendar.components([.Day , .Month , .Year], fromDate: date)
+//            let date = NSDate()
+//            let calendar = NSCalendar.currentCalendar()
+//            let components = calendar.components([.Day , .Month , .Year], fromDate: date)
             
-            let year =  components.year
-            let month = components.month
-            let day = components.day
+//            let year =  components.year
+//            let month = components.month
+//            let day = components.day
             return 0
         } else {
             return (ageMax! + ageMin!)/2
