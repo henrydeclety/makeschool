@@ -15,6 +15,8 @@ target 'myApp' do
   pod 'Firebase'
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
+  pod 'RZTransitions'
+  pod 'BBBadgeBarButtonItem'
 
   target 'myAppTests' do
     inherit! :search_paths

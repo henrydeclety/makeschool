@@ -9,5 +9,8 @@
 #ifndef PartyBot_Bridging_Header_h
 #define PartyBot_Bridging_Header_h
 #import <Spotify/Spotify.h>
+//#import "RZTransitions.h"
+#import <RZTransitions/RZAnimationControllerProtocol.h>
+#import <RZTransitions/RZBaseSwipeInteractionController.h>
 
 #endif /* PartyBot_Bridging_Header_h */

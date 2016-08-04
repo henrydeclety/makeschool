@@ -72,8 +72,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 ErrorHandling.defaultErrorHandler(error!)
                 return
             }
-            let isAnonymous = user!.anonymous  // true
-            let uid = user!.uid
+//            let isAnonymous = user!.anonymous  // true
+//            let uid = user!.uid
         })
 
         // check if we have logged in user

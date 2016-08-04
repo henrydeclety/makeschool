@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>BBBadgeBarButtonItem.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -74,6 +79,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>RZTransitions.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>youtube-ios-player-helper.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -102,7 +112,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>44CA968EE77DF97A3A01D60FFF45D52C</key>
+		<key>5649F0737EF1E398F1EC18CA001A1A5E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -122,17 +132,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>710C8FADA87AE1FD94AC8F1649E319AC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>802D3B1C197FEA0861F5931F7ED43355</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>846ADD4D99B58158D3CE4BD2C55FF78B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8978C7FB7007A28B676AB1EA004C3923</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>996C4CEDBD819845E4AE075097DBD57D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -143,6 +158,11 @@
 			<true/>
 		</dict>
 		<key>AA6BFCD5C063283F69946FB55C3C1128</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ACD14F4306E2B58A2D80BAA565EBF107</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -1,4 +1,5 @@
 PODS:
+  - BBBadgeBarButtonItem (1.2)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
@@ -60,9 +61,11 @@ PODS:
   - ParseUI (1.2.0):
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
+  - RZTransitions (1.2.1)
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
+  - BBBadgeBarButtonItem
   - Bond (= 4.0.0)
   - ConvenienceKit
   - Firebase
@@ -72,9 +75,11 @@ DEPENDENCIES:
   - Parse
   - ParseFacebookUtilsV4
   - ParseUI
+  - RZTransitions
   - youtube-ios-player-helper (~> 0.1.4)
 
 SPEC CHECKSUMS:
+  BBBadgeBarButtonItem: c2fbca0bff18e21b70defc9438a8a5048008e7ca
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   Bond: b729cdb22552def86efd4adfd8b8d93061eb4649
   ConvenienceKit: ba1ad8797897dc0d011676e961a2f3e9b270c841
@@ -95,8 +100,9 @@ SPEC CHECKSUMS:
   Parse: 4f72b1c01b3fc9038bea045681b6cc1b070c081e
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
+  RZTransitions: 0e0013fda6989ee84dc5e44dca79fd539e1a975a
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 03cc63d6c0f53887a19571534c127d63d3eda0c7
+PODFILE CHECKSUM: ea13584b4a16ecbd91b32cde154f99d7b6a0ff10
 
 COCOAPODS: 1.0.1

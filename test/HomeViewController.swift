@@ -25,7 +25,13 @@ public class HomeViewController: UIViewController {
     @IBOutlet weak var ytPlayerView: YTPlayerView!
     @IBOutlet weak var noMorePosts: UIView!
     @IBOutlet weak var lookingForUsers: UIView!
+    @IBOutlet weak var emojisCollectionView: UICollectionView!
     
+    
+    var first1 : NSIndexPath?
+    var last1 : NSIndexPath?
+    var first2 : NSIndexPath?
+    var last2 : NSIndexPath?
     var waiting : Bool?
     var nextUsers : [User] = []
     var currentPosts : [Post] = []
@@ -36,6 +42,8 @@ public class HomeViewController: UIViewController {
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        emojisCollectionView.dataSource = self
+        emojisCollectionView.delegate = self
         ytPlayerView.delegate = self
         reloadNextUsers()
         locationHelper.test()
@@ -131,12 +139,12 @@ public class HomeViewController: UIViewController {
     
     func display(user : User){
         currentPosts = user.posts!
-        descriptionView.text = user["description"] as? String ?? ""
-        age.text = user["age"] as? String ?? ""
+        descriptionView.text = user["description"] as? String ?? "No Description"
+        age.text = user["age"] as? String ?? "0"
         if let sex = user["sex"] as? Bool {
             self.sex.text = sex ? "Man" :  "Woman"
         } else {
-            self.sex.text = ""
+            self.sex.text = "Sex Undefined"
         }
         if user.getTracksInfos().containsString("0") && SpotifyHelper.loggedIn() {
             SpotifyHelper.play(user.getSpotifyURIs(), sender: self)
@@ -222,6 +230,84 @@ extension HomeViewController : SPTAudioStreamingPlaybackDelegate {
             SpotifyHelper.player.seekToOffset(Double(currentPost!.start!), callback: nil)
         }
     }
+}
+
+extension HomeViewController : UICollectionViewDataSource {
+    
+    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return Constants.emojis.count
+    }
+    
+    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = emojisCollectionView.dequeueReusableCellWithReuseIdentifier("basicEmoji", forIndexPath: indexPath) as! BasicEmojiCell
+        cell.emoji.text = Constants.emojis[indexPath.item]
+        return cell
+    }
+    
+    public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+}
+
+extension HomeViewController : UICollectionViewDelegateFlowLayout {
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSize(width: view.frame.width/6, height: view.frame.width/6)
+    }
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 0
+    }
+    
+}
+
+extension HomeViewController : UICollectionViewDelegate {
+    
+    public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        emojisCollectionView.reloadData()
+    }
+    
+    public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+
+        let targetOffset = targetContentOffset.memory.x
+        let currentOffset = scrollView.contentOffset.x
+        var newTargetOffset : CGFloat = 0
+        if (targetOffset > currentOffset) {
+            newTargetOffset = ceil(targetOffset / cellWidth()) * cellWidth();
+        }else {
+            newTargetOffset = floor(targetOffset / cellWidth()) * cellWidth();
+        }
+        
+        if (newTargetOffset < 0) {
+            newTargetOffset = 0
+        } else if (newTargetOffset > scrollView.contentSize.width) {
+            newTargetOffset = scrollView.contentSize.width
+        }
+        
+        targetContentOffset.memory.x = newTargetOffset
+term    }
+    
+    public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        let index = center(scrollView)
+        if index == Constants.first || index == Constants.last {
+            emojisCollectionView.scrollToItemAtIndexPath(Constants.destination, atScrollPosition: UICollectionViewScrollPosition.Left, animated: false)
+        }
+    }
+    
+    func center(scrollView: UIScrollView) -> NSIndexPath {
+        let centerPoint = CGPointMake(scrollView.contentOffset.x + cellWidth()*(3/2), cellHeight()/2)
+        return emojisCollectionView.indexPathForItemAtPoint(centerPoint)!
+    }
+    
+    func cellWidth() -> CGFloat {
+        return emojisCollectionView.frame.size.width/3
+    }
+    
+    func cellHeight() -> CGFloat {
+        return emojisCollectionView.frame.size.height
+    }
+    
 }
 
 

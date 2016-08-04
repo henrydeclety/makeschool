@@ -40,6 +40,13 @@ public class Constants {
         return controller
     }
     
+    public static let emojis : [String] = ["😶","😳","🙌🏽","😍","😎","😶","😳","🙌🏽","😍","😎","😶","😳","🙌🏽"]
+    
+    public static let first = NSIndexPath(forItem: 1, inSection: 0)
+    public static let destination = NSIndexPath(forItem: 5, inSection: 0)
+    public static let last = NSIndexPath(forItem: emojis.count-2, inSection: 0)
+
+    
 //    public static func tapGestureDissmissKeyboard(sender : UIViewController) {
 //        let tap = UITapGestureRecognizer(target: sender, action: #selector((void) -> sender.view.endEditing(true)))
 //        sender.view.addGestureRecognizer(tap)
